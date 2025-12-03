@@ -70,8 +70,8 @@ public class FirstSpotTest {
   public void testMovesValid() throws IOException {
 
     BasicSanguineModel model = makeBasicMoves();
-
-    Coordinates coords = FirstSpot.chooseFirst(model, model.getTurn().getColor());
+    
+    Coordinates coords = first.choose(model, model.getTurn().getColor());
 
     assertEquals(4, coords.col());
     assertEquals(0, coords.row());
@@ -81,7 +81,7 @@ public class FirstSpotTest {
 
     //red move
     assertEquals(PlayerColor.RED, model.getTurn().getColor());
-    coords = FirstSpot.chooseFirst(model, model.getTurn().getColor());
+    coords = first.choose(model, model.getTurn().getColor());
     System.out.println(coords);
     assertEquals(1, coords.col());
     assertEquals(0, coords.row());
@@ -89,7 +89,9 @@ public class FirstSpotTest {
 
     //it can keep filling the board until the game is deemed to be over.
     while (!model.isGameOver()) {
-      coords = MaximizeRowScore.maximizeScore(model, model.getTurn().getColor());
+      MaximizeRowScore max = new MaximizeRowScore();
+
+      coords = max.maximizeScore(model, model.getTurn().getColor());
       if (coords.row() == -1) {
         model.passTurn();
         continue;

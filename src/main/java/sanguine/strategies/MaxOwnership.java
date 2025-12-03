@@ -19,7 +19,7 @@ import sanguine.model.SanguinePlayer;
  * this class holds methods that use a strategy that maximizes the amount of squares that a player
  * owns.
  */
-public class MaxOwnership {
+public class MaxOwnership implements BasicStrategy {
 
   /**
    * chooses the row, column, and card combination that maximizes the amount of cells that the
@@ -32,8 +32,9 @@ public class MaxOwnership {
    *
    * @throws IOException if the deck file cannot be read.
    */
-  public static Coordinates maximizeOwnership(SanguineModel model,
-                                              PlayerColor color) throws IOException {
+  @Override
+  public Coordinates choose(SanguineModel model,
+                            PlayerColor color) throws IOException {
 
     int maxControl = -1;
     Coordinates maxCoords = new Coordinates(-1, -1, null);

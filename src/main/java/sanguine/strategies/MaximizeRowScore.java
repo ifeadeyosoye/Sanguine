@@ -14,7 +14,7 @@ import sanguine.model.SanguinePlayer;
  * this class holds a method that maximizes score per row. the method will be used by an AI bot
  * to determine the best next move.
  */
-public class MaximizeRowScore {
+public class MaximizeRowScore implements BasicStrategy {
 
 
   /**
@@ -29,7 +29,8 @@ public class MaximizeRowScore {
    *
    * @return coordinates
    */
-  public static Coordinates maximizeScore(SanguineModel model,
+  @Override
+  public Coordinates choose(SanguineModel model,
                                           PlayerColor color) throws IOException {
 
     SanguinePlayer player = model.getTurn();

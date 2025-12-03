@@ -14,14 +14,15 @@ import sanguine.model.SanguinePlayer;
 /**
  * this class holds a strategy for the sanguine model. this is the easiest strategy to implement.
  */
-public class FirstSpot {
+public class FirstSpot implements BasicStrategy {
 
   /**
    * this strategy chooses the first card and location that can be played on and plays there.
    * takes in the board and hand as parameters. it will return valid coordinates. if there are no
    * valid coordinates, it will return (-1, -1).
    */
-  public static Coordinates chooseFirst(SanguineModel model,
+  @Override
+  public Coordinates choose(SanguineModel model,
                                         PlayerColor color) throws IOException {
 
     if (model == null) {

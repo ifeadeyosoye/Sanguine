@@ -60,7 +60,8 @@ public class MaxOwnershipTest {
     SanguineCard betterCard = new BasicSanguineCard(firstCard.getName(), 1, 3,
         firstCard.getStringInfluence());
 
-    Coordinates foundCoords = MaxOwnership.maximizeOwnership(model, model.getTurn().getColor());
+    MaxOwnership max = new MaxOwnership();
+    Coordinates foundCoords = max(model, model.getTurn().getColor());
 
     model.playTurn(foundCoords.row(), foundCoords.col(), foundCoords.card());
     printTextView(model);
@@ -69,24 +70,24 @@ public class MaxOwnershipTest {
     assertEquals(0, foundCoords.col());
 
     //there is a tie between placing the card at the top or bottom, and it chose the top.
-    foundCoords = MaxOwnership.maximizeOwnership(model, model.getTurn().getColor());
+    foundCoords = max.choose(model, model.getTurn().getColor());
 
     model.playTurn(foundCoords.row(), foundCoords.col(), foundCoords.card());
     assertEquals(0, foundCoords.row());
     assertEquals(4, foundCoords.col());
 
-    foundCoords = MaxOwnership.maximizeOwnership(model, model.getTurn().getColor());
+    foundCoords = max.choose(model, model.getTurn().getColor());
     model.playTurn(foundCoords.row(), foundCoords.col(), foundCoords.card());
     printTextView(model);
 
     //blue
-    foundCoords = MaxOwnership.maximizeOwnership(model, model.getTurn().getColor());
+    foundCoords = max.choose(model, model.getTurn().getColor());
     model.playTurn(foundCoords.row(), foundCoords.col(), foundCoords.card());
     printTextView(model);
 
     model.passTurn();
     //should retunr null becuase there is no square where a card can be placed where blue gains.
-    foundCoords = MaxOwnership.maximizeOwnership(model, model.getTurn().getColor());
+    foundCoords = max.choose(model, model.getTurn().getColor());
     assertEquals(null, foundCoords.card());
     assertEquals(-1, foundCoords.row());
     assertEquals(-1, foundCoords.col());
