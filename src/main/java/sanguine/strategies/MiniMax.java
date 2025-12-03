@@ -155,7 +155,8 @@ public class MiniMax {
    */
   public static Coordinates executeFirst(ModelReadOnlyInterface model, PlayerColor opponent)
       throws IOException {
-    Coordinates coords = FirstSpot.chooseFirst(model, opponent);
+    FirstSpot first = new FirstSpot();
+    Coordinates coords = first.choose(model, opponent);
     Coordinates coords1 = blockedDaOps(model, coords);
     return coords1;
   }
@@ -201,7 +202,8 @@ public class MiniMax {
    */
   public static Coordinates executeSecond(ModelReadOnlyInterface model, PlayerColor opponent)
       throws IOException {
-    Coordinates coords = MaximizeRowScore.choose(model, opponent);
+    MaximizeRowScore max = new MaximizeRowScore();
+    Coordinates coords = max.choose(model, opponent);
     return blockedDaOps(model, coords);
   }
 
@@ -218,7 +220,8 @@ public class MiniMax {
    */
   public static Coordinates executeThird(ModelReadOnlyInterface model, PlayerColor opponent)
       throws IOException {
-    Coordinates coords = MaxOwnership.maximizeOwnership(model, opponent);
+    MaxOwnership max = new MaxOwnership();
+    Coordinates coords = max.choose(model, opponent);
     return blockedDaOps(model, coords);
   }
 }

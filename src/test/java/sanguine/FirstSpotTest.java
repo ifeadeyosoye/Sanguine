@@ -70,7 +70,8 @@ public class FirstSpotTest {
   public void testMovesValid() throws IOException {
 
     BasicSanguineModel model = makeBasicMoves();
-    
+
+    FirstSpot first = new FirstSpot();
     Coordinates coords = first.choose(model, model.getTurn().getColor());
 
     assertEquals(4, coords.col());
@@ -91,7 +92,7 @@ public class FirstSpotTest {
     while (!model.isGameOver()) {
       MaximizeRowScore max = new MaximizeRowScore();
 
-      coords = max.maximizeScore(model, model.getTurn().getColor());
+      coords = max.choose(model, model.getTurn().getColor());
       if (coords.row() == -1) {
         model.passTurn();
         continue;
@@ -139,9 +140,10 @@ public class FirstSpotTest {
   public void noLegalMovesIsCorrect() throws IOException {
     SanguineModel model = makeModel();
 
-    Coordinates coords = MaximizeRowScore.maximizeScore(model, model.getTurn().getColor());
+    MaximizeRowScore max = new MaximizeRowScore();
+    Coordinates coords = max.choose(model, model.getTurn().getColor());
     while (!model.isGameOver()) {
-      coords = MaximizeRowScore.maximizeScore(model, model.getTurn().getColor());
+      coords = max.choose(model, model.getTurn().getColor());
       if (coords.card() == null) {
         model.passTurn();
         continue;

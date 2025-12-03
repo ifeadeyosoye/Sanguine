@@ -59,8 +59,7 @@ public class SanguineStubController implements StubController, Listener {
 
     }
   }
-
-
+  
   @Override
   public void clickCard(SanguineCard card) {
     System.out.println("This card has been pressed: " + card.toString());
