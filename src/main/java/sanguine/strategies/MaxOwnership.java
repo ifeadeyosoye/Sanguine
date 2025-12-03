@@ -33,8 +33,8 @@ public class MaxOwnership implements BasicStrategy {
    * @throws IOException if the deck file cannot be read.
    */
   @Override
-  public Coordinates choose(SanguineModel model,
-                            PlayerColor color) throws IOException {
+  public Coordinates choose(ModelReadOnlyInterface model,
+                            PlayerColor color) {
 
     int maxControl = -1;
     Coordinates maxCoords = new Coordinates(-1, -1, null);
@@ -73,12 +73,11 @@ public class MaxOwnership implements BasicStrategy {
    *
    * @throws IOException if the deck file cannot be read.
    */
-  private static int getOwnershipAfterPlaceCard(SanguineModel model, SanguineCard card,
-                                                int row, int col, PlayerColor color)
-      throws IOException {
+  private static int getOwnershipAfterPlaceCard(ModelReadOnlyInterface model, SanguineCard card,
+                                                int row, int col, PlayerColor color) {
 
     SanguineGameBoard board = model.getBoard().getBoard();
-    SanguinePlayer tempPlayer = new SanguinePlayer(model.createDeck(), color, 7);
+    SanguinePlayer tempPlayer = new SanguinePlayer(List.of(), color, 7);
     if (!model.placeCardLegal(row, col, card, tempPlayer)) {
       return -1;
     }

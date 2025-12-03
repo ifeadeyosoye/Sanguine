@@ -32,4 +32,9 @@ public interface Listener {
    * A method that defines what a subscriber should do when 'm' is pressed on the keyboard.
    */
   public void pressM();
+
+  /**
+   * A method that is called when a player confirms that their move decision is final.
+   */
+  public void confirmMove();
 }

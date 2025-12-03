@@ -30,15 +30,15 @@ public class MaximizeRowScore implements BasicStrategy {
    * @return coordinates
    */
   @Override
-  public Coordinates choose(SanguineModel model,
-                                          PlayerColor color) throws IOException {
+  public Coordinates choose(ModelReadOnlyInterface model,
+                                          PlayerColor color) {
 
     SanguinePlayer player = model.getTurn();
     List<SanguineCard> hand = model.getPlayerHand(color);
     GameBoard board = model.getBoard();
 
     for (int r = 0; r < board.getRows(); r++) {
-      Player oppositePlayer = getOppositePlayer(new SanguinePlayer(model.createDeck(), color, 7));
+      Player oppositePlayer = getOppositePlayer(new SanguinePlayer(List.of(), color, 7));
 
       int oppositeScore = model.getRowScore(oppositePlayer.getColor(), r);
       int score = model.getRowScore(player.getColor(), r);

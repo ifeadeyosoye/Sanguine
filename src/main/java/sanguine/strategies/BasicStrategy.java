@@ -1,6 +1,7 @@
 package sanguine.strategies;
 
 import java.io.IOException;
+import sanguine.model.ModelReadOnlyInterface;
 import sanguine.model.PlayerColor;
 import sanguine.model.SanguineModel;
 
@@ -20,6 +21,6 @@ public interface BasicStrategy {
    * @return Coordinate object that has row, col, card. null and -1 values if its a pass.
    * @throws IOException if deck object cannot be read
    */
-  public Coordinates choose(SanguineModel model,
-                            PlayerColor color) throws IOException;
+  public Coordinates choose(ModelReadOnlyInterface model,
+                            PlayerColor color);
 }

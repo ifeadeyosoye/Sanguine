@@ -45,7 +45,7 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard> {
 
 
   @Override
-  public SanguineGameBoard getBoard() throws IOException {
+  public SanguineGameBoard getBoard() {
     return board.getBoard();
   }
 

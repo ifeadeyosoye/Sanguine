@@ -30,7 +30,7 @@ public class MiniMax {
    *
    * @throws IOException if deck file cannot be read
    */
-  public static Coordinates minimizeOps(SanguineModel model) throws IOException {
+  public static Coordinates minimizeOps(ModelReadOnlyInterface model) throws IOException {
 
     PlayerColor opponent = model.getTurn().getColor() == PlayerColor.RED ? PlayerColor.BLUE
         : PlayerColor.RED;
@@ -85,7 +85,7 @@ public class MiniMax {
    * @return if the strategy is being used, a boolean.
    * @throws IOException if the deck file cannot be read
    */
-  public static boolean getFirstStrategy(SanguineModel model, PlayerColor opponent)
+  public static boolean getFirstStrategy(ModelReadOnlyInterface model, PlayerColor opponent)
       throws IOException {
     int total = 0;
     int firstHalf = 0;
@@ -129,7 +129,7 @@ public class MiniMax {
    *
    * @throws IOException if the deck file cannot be read
    */
-  public static boolean getSecondStrategy(SanguineModel model, PlayerColor opponent,
+  public static boolean getSecondStrategy(ModelReadOnlyInterface model, PlayerColor opponent,
                                    PlayerColor currentPlayer)
       throws IOException {
     int winning = 0;
@@ -153,7 +153,7 @@ public class MiniMax {
    *
    * @throws IOException if the deck file cannot be read
    */
-  public static Coordinates executeFirst(SanguineModel model, PlayerColor opponent)
+  public static Coordinates executeFirst(ModelReadOnlyInterface model, PlayerColor opponent)
       throws IOException {
     Coordinates coords = FirstSpot.chooseFirst(model, opponent);
     Coordinates coords1 = blockedDaOps(model, coords);
@@ -171,7 +171,7 @@ public class MiniMax {
    *
    * @throws IOException if deck file cannot be read.
    */
-  private static Coordinates blockedDaOps(SanguineModel model, Coordinates coords)
+  private static Coordinates blockedDaOps(ModelReadOnlyInterface model, Coordinates coords)
       throws IOException {
     for (SanguineCard card : model.getPlayerHand(model.getTurn().getColor())) {
       for (int r = 0; r < model.getBoard().getRows(); r++) {
@@ -199,9 +199,9 @@ public class MiniMax {
    *
    * @throws IOException if the deck file cannot be read
    */
-  public static Coordinates executeSecond(SanguineModel model, PlayerColor opponent)
+  public static Coordinates executeSecond(ModelReadOnlyInterface model, PlayerColor opponent)
       throws IOException {
-    Coordinates coords = MaximizeRowScore.maximizeScore(model, opponent);
+    Coordinates coords = MaximizeRowScore.choose(model, opponent);
     return blockedDaOps(model, coords);
   }
 
@@ -216,7 +216,7 @@ public class MiniMax {
    *
    * @throws IOException if the deck file cannot be read
    */
-  public static Coordinates executeThird(SanguineModel model, PlayerColor opponent)
+  public static Coordinates executeThird(ModelReadOnlyInterface model, PlayerColor opponent)
       throws IOException {
     Coordinates coords = MaxOwnership.maximizeOwnership(model, opponent);
     return blockedDaOps(model, coords);

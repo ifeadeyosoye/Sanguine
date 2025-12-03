@@ -22,14 +22,15 @@ public class FirstSpot implements BasicStrategy {
    * valid coordinates, it will return (-1, -1).
    */
   @Override
-  public Coordinates choose(SanguineModel model,
-                                        PlayerColor color) throws IOException {
+  public Coordinates choose(ModelReadOnlyInterface model,
+                                        PlayerColor color) {
 
     if (model == null) {
       throw new IllegalArgumentException("model cannot be null");
     }
-    SanguinePlayer player = new SanguinePlayer(model.createDeck(), color, 7);
+    SanguinePlayer player = new SanguinePlayer(List.of(), color, 7);
     List<SanguineCard> hand = model.getPlayerHand(color);
+    model.getBoard();
     GameBoard board = model.getBoard();
 
     for (SanguineCard card : hand) {

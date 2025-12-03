@@ -90,7 +90,7 @@ public interface GameBoard {
    *
    * @return a copy of the game board
    */
-  GameBoard getBoard() throws IOException;
+  GameBoard getBoard();
 
   /**
    * A method to get the color row score of a certain player in the game.
