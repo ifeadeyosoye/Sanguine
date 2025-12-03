@@ -7,7 +7,7 @@ import sanguine.model.BasicSanguinePawn;
 import sanguine.model.PlayerColor;
 
 /**
- * A test class for pawns that are used in a game of Sanguine.
+ * A test class for pawns that are used in a game of SanguineGame.
  * This tests BasicSanguinePawn and Pawn class and interface respectively
  */
 public class PawnTests {

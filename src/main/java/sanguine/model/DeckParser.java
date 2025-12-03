@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class takes in a file path and converts it to a list of Basic Sanguine Cards or a deck.
+ * This class takes in a file path and converts it to a list of Basic SanguineGame Cards or a deck.
  *
- * <p>This list is then used as a deck in a game of Sanguine later on.</p>
+ * <p>This list is then used as a deck in a game of SanguineGame later on.</p>
  * As a result, these files that contain a deck are checked for a valid deck
  * For example, we can not have more than 2 of the same card and a valid card must have
  * a name, value, cost, and a 5x5 influence grid.
@@ -21,11 +21,11 @@ public class DeckParser {
   // Public methods:
 
   /**
-   * A method that will be called to make a deck of Basic Sanguine Cards.
+   * A method that will be called to make a deck of Basic SanguineGame Cards.
    * It will construct this deck from a given text file of the correct format to be parsed through.
    *
    * @param path the text file path containing a text representation of the deck.
-   * @return a list of Basic Sanguine Cards that will be used as a deck.
+   * @return a list of Basic SanguineGame Cards that will be used as a deck.
    * @throws IOException              if the file path is invalid.
    * @throws IllegalArgumentException if deck is invalid.
    */

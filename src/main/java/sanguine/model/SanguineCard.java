@@ -3,7 +3,7 @@ package sanguine.model;
 import java.util.List;
 
 /**
- * A Sanguine version of the Card interface.
+ * A SanguineGame version of the Card interface.
  *
  * <p>Adds new methods like getCost(), getValue(), getColorInfluence(), getIntInfluence(), and </p>
  * getName().
@@ -12,21 +12,21 @@ import java.util.List;
  */
 public interface SanguineCard extends Card {
   /**
-   * A method that returns the cost of a Sanguine Card.
+   * A method that returns the cost of a SanguineGame Card.
    *
    * @return the cost of a card as an Int
    */
   int getCost();
 
   /**
-   * A method that returns the value of a Sanguine Card.
+   * A method that returns the value of a SanguineGame Card.
    *
    * @return the value of a card as an Int
    */
   int getValue();
 
   /**
-   * A method that returns the color influence grid of a Sanguine Card.
+   * A method that returns the color influence grid of a SanguineGame Card.
    *
    * <p>The colors are:</p>
    * Cyan: Influence on the grid
@@ -38,7 +38,7 @@ public interface SanguineCard extends Card {
   List<List<CardColor>> getColorInfluence();
 
   /**
-   * A method that returns the String influence grid of a Sanguine Card.
+   * A method that returns the String influence grid of a SanguineGame Card.
    *
    * <p>The characters are:</p>
    * 'C': The card itself
@@ -50,7 +50,7 @@ public interface SanguineCard extends Card {
   List<String> getStringInfluence();
 
   /**
-   * A method that returns the Integer influence grid of a Sanguine Card.
+   * A method that returns the Integer influence grid of a SanguineGame Card.
    *
    * <p>The integers are as:</p>
    * 1: Influence on the grid
@@ -61,7 +61,7 @@ public interface SanguineCard extends Card {
   List<List<Integer>> getIntInfluence();
 
   /**
-   * A method that returns the name of a Sanguine Card.
+   * A method that returns the name of a SanguineGame Card.
    *
    * @return the name as a String
    */

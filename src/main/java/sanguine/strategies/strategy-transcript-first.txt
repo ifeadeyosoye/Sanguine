@@ -1,0 +1,7 @@
+this describes how the strategy picks the first available move:
+
+1. for every card in the current player's hand (red in this case) it goes through the rows, top down, looking for where
+   it can be placed
+2. in the first row it checks column 1, the first cell.
+3. it sees that there is one pawn there. this works perfectly becuase the card it has currently has a cost of 1.
+4. without any other restrictions, it returns the coordinates of the cell as well as the card to the controller.

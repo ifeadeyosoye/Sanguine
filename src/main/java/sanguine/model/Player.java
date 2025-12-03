@@ -3,9 +3,9 @@ package sanguine.model;
 import java.util.List;
 
 /**
- * This interface marks the concept of a Player in a game of Sanguine.
+ * This interface marks the concept of a Player in a game of SanguineGame.
  *
- * <p>A player in a game of Sanguine is either Red or Blue</p>
+ * <p>A player in a game of SanguineGame is either Red or Blue</p>
  * A player is able to get their color, deck, hand.
  * They are also able to shuffle their deck, draw cards from their deck to their hand, and then
  * from their hand to the game board within the model later on.

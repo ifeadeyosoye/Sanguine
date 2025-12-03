@@ -13,7 +13,7 @@ import sanguine.model.SanguineCard;
 import sanguine.view.BasicSanguineTextualView;
 
 /**
- * A class that tests the textual view display for a game of Sanguine.
+ * A class that tests the textual view display for a game of SanguineGame.
  *
  * <p>Currently, the class prints out the board after each move to see the update.</p>
  */

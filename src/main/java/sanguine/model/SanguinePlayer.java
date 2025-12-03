@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * A Sanguine specific player that implements the Player interface.
+ * A SanguineGame specific player that implements the Player interface.
  *
  * <p>This player is assigned a player color, hand, deck, and max hand size.</p>
  *
@@ -23,11 +23,11 @@ public class SanguinePlayer implements Player {
   private final int maxHandSize;
 
   /**
-   * A constructor that creates a Sanguine player that has a deck and player color.
+   * A constructor that creates a SanguineGame player that has a deck and player color.
    *
    * <p>The player's hand starts off as empty.</p>
    *
-   * @param deck        the player's deck as a basic Sanguine card
+   * @param deck        the player's deck as a basic SanguineGame card
    * @param color       the player's color
    * @param maxHandSize the player's max hand size at any given time
    */

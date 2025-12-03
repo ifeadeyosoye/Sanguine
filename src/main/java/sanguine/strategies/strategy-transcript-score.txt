@@ -1,0 +1,13 @@
+this walks through the strategy that maximizes score per row. assumptions: that it is reds turn and the board has just
+been created, so only the cells in the first and last columns have pawns (1 each).
+
+1. this strategy loops through every card in red's hand.
+2. for every card, it loops through each row and checks the score. if red is winning the row (has more points), it will
+   skip that row
+    3. in the first row, index 0, red is not winning (it is tied), so the strategy jumps into that row.
+4. for that row, the strategy makes sure that adding the value of the current card (3) will make red win that row.
+   it will in this case.
+5. it then goes through every cell in that row, checking to see if the cell can hold the current card.
+   6. the first cell in this row has 1 pawn, and the current card has a cost of 1.
+7. it determines that place the current card in this cell WILL make red win that row, so it tells the controller to
+   do so.

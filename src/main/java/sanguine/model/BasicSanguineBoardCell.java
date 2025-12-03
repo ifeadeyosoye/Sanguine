@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A basic version of a Sanguine board cell.
+ * A basic version of a SanguineGame board cell.
  *
  * <p>A cell either holds pawns or a card, and depending on the color of either object,</p>
  * there is an owner of that cell.
@@ -17,6 +17,16 @@ public class BasicSanguineBoardCell implements SanguineBoardCell {
   private SanguineCard card;
   private PlayerColor ownerColor;
 
+  /**
+   * constructor for when we are creating a copy of the cell.
+   *
+   * @param pawns list of pawns.
+   */
+  public BasicSanguineBoardCell(List<BasicSanguinePawn> pawns) {
+    this.pawns = pawns;
+    this.ownerColor = pawns.getFirst().getColor();
+  }
+  
   /**
    * A constructor that initializes pawns to an empty list.
    */
@@ -83,7 +93,7 @@ public class BasicSanguineBoardCell implements SanguineBoardCell {
   }
 
   @Override
-  public void placeCard(SanguineCard card, Player player) {
+  public void placeCard(SanguineCard card, PlayerColor color) {
     if (this.card != null) {
       throw new IllegalStateException("Can not place another card in this cell");
     }
@@ -92,7 +102,7 @@ public class BasicSanguineBoardCell implements SanguineBoardCell {
       throw new IllegalArgumentException("Given a null card");
     }
 
-    if (player == null) {
+    if (color == null) {
       throw new IllegalArgumentException("player cannot be null");
     }
 
@@ -100,13 +110,13 @@ public class BasicSanguineBoardCell implements SanguineBoardCell {
       throw new IllegalStateException("Cell doesnt have enough pawns to place a card");
     }
 
-    if (player.getColor() != pawns.getFirst().getColor()) {
+    if (color != pawns.getFirst().getColor()) {
       throw new IllegalArgumentException("Player color and pawn colors do not match!");
     }
 
     pawns.clear();
     this.card = card;
-    this.ownerColor = player.getColor();
+    this.ownerColor = color;
 
   }
 
@@ -124,5 +134,33 @@ public class BasicSanguineBoardCell implements SanguineBoardCell {
   @Override
   public boolean containsCard() {
     return card != null && pawns.isEmpty();
+  }
+
+  /**
+   * returns a copy of itself. deep copy with pawns if needed, or cards if it contains a card.
+   *
+   * @return a copy of this object
+   */
+  @Override
+  public BasicSanguineBoardCell getCopy() {
+    BasicSanguineBoardCell copy = new BasicSanguineBoardCell();
+
+    if (!this.getPawns().isEmpty()) {
+      List<BasicSanguinePawn> pawns = new ArrayList<>();
+      for (BasicSanguinePawn p : this.pawns) {
+        pawns.add(new BasicSanguinePawn(p.getColor()));
+      }
+      return new BasicSanguineBoardCell(pawns);
+    }
+    if (this.containsCard()) {
+      List<BasicSanguinePawn> pawns = new ArrayList<>();
+      for (int i = 0; i < this.getCard().getCost(); i++) {
+        pawns.add(new BasicSanguinePawn(this.getColor()));
+      }
+      copy = new BasicSanguineBoardCell(pawns);
+      copy.placeCard(this.getCard(), this.ownerColor);
+      return copy;
+    }
+    return copy;
   }
 }

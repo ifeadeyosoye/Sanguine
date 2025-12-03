@@ -10,10 +10,13 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import org.junit.Test;
 import sanguine.model.BasicSanguineBoardCell;
 import sanguine.model.DeckParser;
+import sanguine.model.Player;
 import sanguine.model.PlayerColor;
+import sanguine.model.SanguineBoardCell;
 import sanguine.model.SanguineCard;
 import sanguine.model.SanguinePlayer;
 
@@ -95,7 +98,7 @@ public class CellTests {
     System.out.println(cell.getColor());
     cell.placePawn(player);
     player.deckToHand(3);
-    cell.placeCard(player.drawHandToBoard(), player);
+    cell.placeCard(player.drawHandToBoard(), player.getColor());
   }
 
   /**
@@ -149,7 +152,7 @@ public class CellTests {
 
     player.deckToHand(3);
     assertThrows(IllegalStateException.class,
-        () -> cell.placeCard(player.drawHandToBoard(), player));
+        () -> cell.placeCard(player.drawHandToBoard(), player.getColor()));
   }
 
   /**
@@ -166,7 +169,7 @@ public class CellTests {
     cell.placePawn(player);
     player.deckToHand(3);
     assertThrows(IllegalArgumentException.class,
-        () -> cell.placeCard(null, player));
+        () -> cell.placeCard(null, player.getColor()));
   }
 
   /**
@@ -183,7 +186,7 @@ public class CellTests {
     cell.placePawn(player);
     player.deckToHand(3);
     assertThrows(IllegalArgumentException.class,
-        () -> cell.placeCard(player.drawHandToBoard(), null));
+        () -> cell.placeCard(player.drawHandToBoard(), (PlayerColor) null));
   }
 
   /**
@@ -197,10 +200,10 @@ public class CellTests {
 
     cell.placePawn(player);
     player.deckToHand(3);
-    cell.placeCard(player.drawHandToBoard(), player);
+    cell.placeCard(player.drawHandToBoard(), player.getColor());
 
     assertThrows(IllegalStateException.class,
-        () -> cell.placeCard(player.drawHandToBoard(), player));
+        () -> cell.placeCard(player.drawHandToBoard(), player.getColor()));
   }
 
   /**
@@ -214,13 +217,13 @@ public class CellTests {
 
     cell.placePawn(redPlayer);
     redPlayer.deckToHand(3);
-    cell.placeCard(redPlayer.drawHandToBoard(), redPlayer);
+    cell.placeCard(redPlayer.drawHandToBoard(), redPlayer.getColor());
 
     SanguinePlayer bluePlayer = new SanguinePlayer(DeckParser.makeDeck(
         "docs" + File.separator + "example.deck"), PlayerColor.BLUE, 3);
 
     assertThrows(IllegalArgumentException.class,
-        () -> cell.placeCard(bluePlayer.drawHandToBoard(), bluePlayer));
+        () -> cell.placeCard(bluePlayer.drawHandToBoard(), bluePlayer.getColor()));
   }
 
   /**
@@ -234,7 +237,7 @@ public class CellTests {
 
     cell.placePawn(redPlayer);
     redPlayer.deckToHand(3);
-    cell.placeCard(redPlayer.drawHandToBoard(), redPlayer);
+    cell.placeCard(redPlayer.drawHandToBoard(), redPlayer.getColor());
 
     SanguinePlayer bluePlayer = new SanguinePlayer(DeckParser.makeDeck(
         "docs" + File.separator + "example.deck"), PlayerColor.BLUE, 3);
@@ -250,6 +253,7 @@ public class CellTests {
   @Test
   public void changeColorOfPawns() throws IOException {
     BasicSanguineBoardCell cell = new BasicSanguineBoardCell();
+
     SanguinePlayer redPlayer = new SanguinePlayer(DeckParser.makeDeck(
         "docs" + File.separator + "example.deck"), PlayerColor.RED, 3);
     SanguinePlayer bluePlayer = new SanguinePlayer(DeckParser.makeDeck(
@@ -260,5 +264,36 @@ public class CellTests {
 
     cell.changeColorsOfPawns(bluePlayer);
     assertEquals(bluePlayer.getColor(), cell.getColor());
+  }
+
+  @Test
+  public void testCopy() throws IOException {
+
+    SanguineBoardCell original = new BasicSanguineBoardCell();
+    SanguineBoardCell copy = original.getCopy();
+
+    assertEquals(original.getPawns().size(), copy.getPawns().size());
+    assertEquals(original.getValue(), copy.getValue());
+    assertEquals(original.getColor(), copy.getColor());
+
+    List<SanguineCard> deck = DeckParser.makeDeck("docs" + File.separator + "example.deck");
+    SanguinePlayer redPlayer = new SanguinePlayer(deck, PlayerColor.RED, 3);
+
+    original.placePawn(redPlayer);
+    copy = original.getCopy();
+
+    assertEquals(original.getPawns().size(), copy.getPawns().size());
+    assertEquals(original.getValue(), copy.getValue());
+    assertEquals(original.getColor(), copy.getColor());
+
+    original.placeCard(deck.removeFirst(), redPlayer.getColor());
+    copy = original.getCopy();
+
+    assertEquals(original.getPawns().size(), copy.getPawns().size());
+    assertEquals(original.getCard(), copy.getCard());
+    assertEquals(original.getValue(), copy.getValue());
+    assertEquals(original.getColor(), copy.getColor());
+
+
   }
 }

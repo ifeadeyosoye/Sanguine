@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import sanguine.strategies.SimulatePlacement;
 
 /**
- * A Basic implementation of SanguineModel that takes in type Sanguine Card.
+ * A Basic implementation of SanguineModel that takes in type SanguineGame Card.
  *
  * <p>Class defines the board, players, max player hand size,</p>
  * whether a game is started and the current player.
@@ -57,7 +58,7 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard> {
       throw new IllegalStateException("Game has already been started!");
     }
 
-    // dimension validity should be checked in Sanguine board
+    // dimension validity should be checked in SanguineGame board
     board = new SanguineGameBoard(rows, cols);
 
     // If decks are empty or null, we give the player a default deck
@@ -197,7 +198,7 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard> {
     hasGameStarted();
 
     if (card == null) {
-      throw new IllegalArgumentException("Player is null");
+      throw new IllegalArgumentException("card is null");
     }
 
     placeCard(row, col, card);
@@ -242,6 +243,21 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard> {
   }
 
   @Override
+  public int getRowScore(PlayerColor color, int row)
+      throws IllegalStateException, IllegalArgumentException {
+    hasGameStarted();
+    if (color == null) {
+      throw new IllegalArgumentException("Player color is null!");
+    }
+
+    if (row < 0) {
+      throw new IllegalArgumentException("Row num is invalid!");
+    }
+
+    return board.getPlayerColorRowScore(color, row);
+  }
+
+  @Override
   public SanguinePlayer getWinner() throws IllegalStateException, TieException {
     if (!isGameOver()) {
       return null;
@@ -265,6 +281,85 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard> {
     hasGameStarted();
 
     return currentPlayer;
+  }
+
+  @Override
+  public SanguineBoardCell getCellAt(int row, int col) {
+    SanguineBoardCell original = board.getCellAt(row, col);
+
+    return original.getCopy();
+  }
+
+  /**
+   * this method returns a copy of the designated player's hand. if color is red, then it returns
+   * red player's hand, blue otherwise.
+   *
+   * @param color color of player
+   *
+   * @return player's deck
+   */
+  @Override
+  public List<SanguineCard> getPlayerHand(PlayerColor color) {
+    if (color == null) {
+      throw new IllegalArgumentException("color cant be null");
+    }
+    if (color == PlayerColor.RED) {
+      return List.copyOf(redPlayer.getHand());
+    }
+    return List.copyOf(bluePlayer.getHand());
+  }
+
+  /**
+   * checks which player owns the pawns or cards in a cell.
+   *
+   * @param row of target cell
+   * @param col of target cell
+   * @return the color of the player that owns the cell
+   */
+  @Override
+  public PlayerColor getOwnershipOfCell(int row, int col) {
+    if (row < 0 || row > board.getRows()) {
+      throw new IllegalArgumentException("rows is out of bounds for row " + row);
+    }
+    if (col < 0 || col > board.getRows()) {
+      throw new IllegalArgumentException("cols is out of bounds for col " + col);
+    }
+    return board.getCellAt(row, col).getColor();
+  }
+
+  @Override
+  public boolean placeCardLegal(int row, int col, SanguineCard card,
+                                SanguinePlayer player)
+      throws IllegalStateException, IllegalArgumentException {
+    hasGameStarted();
+
+    if (card == null) {
+      throw new IllegalArgumentException("Card is null!");
+    }
+
+    if (player == null) {
+      throw new IllegalArgumentException("Player color is null!");
+    }
+
+    if (row < 0 || row > board.getRows() - 1) {
+      throw new IllegalArgumentException("Row coordinate is invalid!");
+    }
+
+    if (col < 0 || col > board.getCols() - 1) {
+      throw new IllegalArgumentException("Row coordinate is invalid!");
+    }
+
+    BasicSanguineBoardCell cell = board.getCellAt(row, col);
+
+    if (cell.containsCard() || cell.getPawns().isEmpty() || cell.getColor() != player.getColor()) {
+      return false;
+    }
+
+    if (card.getCost() < cell.getPawns().size()) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
 
@@ -321,10 +416,10 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard> {
       System.out.print("");
     }
 
-    if (cell.getPawns().isEmpty()) {
+    if (cell.getPawns().isEmpty() || cell.getPawns().size() == 1 || cell.getPawns().size() == 2) {
       cell.placePawn(currentPlayer);
-      return;
     }
+
     cell.changeColorsOfPawns(currentPlayer);
   }
 
@@ -347,7 +442,6 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard> {
 
     for (InfluenceCoords coord : coords) {
 
-      // TODO this doenst work for negative numbers
       int newRow = row + coord.row;
       int newCol = col + coord.col;
 

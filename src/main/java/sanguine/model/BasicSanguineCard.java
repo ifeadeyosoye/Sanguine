@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * An implementation of Sanguine card which extends Card.
+ * An implementation of SanguineGame card which extends Card.
  *
  * <p>Holds values like the card's name, cost, value, and influence grid.</p>
  * The constructor sets all of these values above and verifies if the influence grid is valid.
@@ -24,7 +24,7 @@ public class BasicSanguineCard implements SanguineCard {
 
 
   /**
-   * A constructor for a Basic Sanguine Card that takes in its name, cost, value, and influence.
+   * A constructor for a Basic SanguineGame Card that takes in its name, cost, value, and influence.
    *
    * @param name         the name of card as a String
    * @param cost         the cost of the card as an int

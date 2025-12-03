@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * This is a class representing a Sanguine game board.
+ * This is a class representing a SanguineGame game board.
  *
  * <p>The actual game board is represented as a 2D array</p>
  * An array is used because the game board size should be immutable
@@ -92,7 +92,7 @@ public class SanguineGameBoard implements GameBoard {
     if (board[row][col] == null) {
       throw new IllegalStateException("cannot add card to cell with no pawns.");
     }
-    board[row][col].placeCard(card, player);
+    board[row][col].placeCard(card, player.getColor());
     return card;
   }
 
@@ -120,6 +120,26 @@ public class SanguineGameBoard implements GameBoard {
       return PlayerColor.BLUE;
     } else {
       throw new TieException("Tie when calculating row score!");
+    }
+  }
+
+  @Override
+  public int getPlayerColorRowScore(PlayerColor color, int row) throws IllegalArgumentException {
+    if (color == null) {
+      throw new IllegalArgumentException("Player Color is null!");
+    }
+
+    Result result = getResult(row);
+
+    switch (color) {
+      case PlayerColor.BLUE:
+        return result.blue;
+
+      case PlayerColor.RED:
+        return result.red;
+
+      default:
+        throw new IllegalStateException("Couldn't get PlayerColor row score");
     }
   }
 

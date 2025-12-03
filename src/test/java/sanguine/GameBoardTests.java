@@ -210,4 +210,27 @@ public class GameBoardTests {
     assertEquals(card.getValue(), board.getCellAt(1, 1).getValue());
 
   }
+
+  /**
+   * This tests that we can place a card when there are pawns in a cell.
+   *
+   * @throws IOException if text file is invalid
+   */
+  @Test
+  public void testGetPlayerColorRowScore() throws IOException {
+    SanguineGameBoard board = new SanguineGameBoard(3, 5);
+    List<SanguineCard> deck = DeckParser.makeDeck("docs" + File.separator + "example.deck");
+    SanguineCard card = deck.getFirst();
+    SanguinePlayer player = new SanguinePlayer(deck, PlayerColor.RED, 3);
+
+
+    assertEquals(0, board.getPlayerColorRowScore(player.getColor(), 1));
+
+    board.addPawnToCell(1, 1, player);
+
+    board.addCardToCell(1, 1, card, player);
+
+    assertEquals(card.getValue(), board.getPlayerColorRowScore(player.getColor(), 1));
+
+  }
 }

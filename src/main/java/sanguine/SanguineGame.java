@@ -3,17 +3,20 @@ package sanguine;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import sanguine.controller.SanguineStubController;
+import sanguine.controller.StubController;
 import sanguine.model.BasicSanguineModel;
 import sanguine.model.DeckParser;
-import sanguine.model.PlayerColor;
 import sanguine.model.SanguineCard;
 import sanguine.model.SanguinePlayer;
 import sanguine.view.BasicSanguineTextualView;
+import sanguine.view.Listener;
+import sanguine.view.SanguineViewFrame;
 
 /**
  * This contains the main method to our program. this is the doorway.
  */
-public class Sanguine {
+public class SanguineGame {
 
   /**
    * This is the method that will start our program.
@@ -48,7 +51,8 @@ public class Sanguine {
     }
     model.startGame(3, 5, deck, deck, 5);
 
-    BasicSanguineTextualView view = new BasicSanguineTextualView(model);
+    Listener controller = new SanguineStubController(model);
+    SanguineViewFrame view = new SanguineViewFrame(model, controller);
 
     while (!model.isGameOver()) {
       

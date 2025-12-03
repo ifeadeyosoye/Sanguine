@@ -17,9 +17,9 @@ import sanguine.model.SanguineCard;
 import sanguine.model.SanguinePlayer;
 
 /**
- * A class for testing Player and Sanguine Player and Advanced Card which extends Card.
+ * A class for testing Player and SanguineGame Player and Advanced Card which extends Card.
  *
- * <p>Because Sanguine Player relies on receiving a valid deck, we will be using DeckParser</p>
+ * <p>Because SanguineGame Player relies on receiving a valid deck, we will be using DeckParser</p>
  * to create the deck and operate under the assumption that it works because it was tested
  * beforehand.
  */

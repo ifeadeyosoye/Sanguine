@@ -1,7 +1,7 @@
 package sanguine.model;
 
 /**
- * An extension of a pawn specifically for a game of Sanguine.
+ * An extension of a pawn specifically for a game of SanguineGame.
  *
  * <p>In this game, a pawn is owned by a player, hence why the pawn color is of type PlayerColor</p>
  * Interface also sets new getter methods to get the color and value of a pawn.

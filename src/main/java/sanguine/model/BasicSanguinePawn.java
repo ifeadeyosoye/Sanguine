@@ -1,9 +1,9 @@
 package sanguine.model;
 
 /**
- * An implementation of a pawn for a game of Sanguine.
+ * An implementation of a pawn for a game of SanguineGame.
  *
- * <p>In a game of Sanguine, a pawn is of value one and is owned by a player (red or blue).</p>
+ * <p>In a game of SanguineGame, a pawn is of value one and is owned by a player (red or blue).</p>
  */
 public class BasicSanguinePawn implements SanguinePawn {
   // Private fields:

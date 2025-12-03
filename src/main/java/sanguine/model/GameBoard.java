@@ -92,4 +92,14 @@ public interface GameBoard {
    */
   GameBoard getBoard() throws IOException;
 
+  /**
+   * A method to get the color row score of a certain player in the game.
+   *
+   * @param color the player color
+   * @param row the desired row to check
+   * @return the score in the row for that player
+   * @throws IllegalArgumentException If the color is null
+   */
+  int getPlayerColorRowScore(PlayerColor color, int row) throws IllegalArgumentException;
+
 }

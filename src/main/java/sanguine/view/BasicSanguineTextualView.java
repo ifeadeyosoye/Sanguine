@@ -3,11 +3,12 @@ package sanguine.view;
 import java.io.IOException;
 import sanguine.model.BasicSanguineBoardCell;
 import sanguine.model.BasicSanguineModel;
+import sanguine.model.ModelReadOnlyInterface;
 import sanguine.model.PlayerColor;
 import sanguine.model.SanguineGameBoard;
 
 /**
- * A textual view for a Sanguine game. It renders the current state of the game as a string.
+ * A textual view for a SanguineGame game. It renders the current state of the game as a string.
  * String is readable for the user.
  *
  * <p>It renders each row on a new line, documenting the cards, pawns, or empty cells</p>
@@ -19,14 +20,14 @@ import sanguine.model.SanguineGameBoard;
 public class BasicSanguineTextualView implements SanguineTextualView {
 
   // Private fields
-  private final BasicSanguineModel model;
+  private final ModelReadOnlyInterface model;
 
   /**
    * A constructor for a textual view that only takes the model.
    *
-   * @param model the Sanguine game model
+   * @param model the SanguineGame game model
    */
-  public BasicSanguineTextualView(BasicSanguineModel model) {
+  public BasicSanguineTextualView(ModelReadOnlyInterface model) {
     this.model = model;
   }
 

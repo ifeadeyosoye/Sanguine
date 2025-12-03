@@ -54,7 +54,7 @@ public interface SanguineBoardCell {
    * A method that places a card in the cell if the card value, number of pawns and pawn colors
    * match.
    */
-  void placeCard(SanguineCard card, Player player);
+  void placeCard(SanguineCard card, PlayerColor color);
 
   /**
    * A method that changes the colors of pawns in the cell to the opposing player's color.
@@ -71,4 +71,11 @@ public interface SanguineBoardCell {
    * @return whether the cell contains a card
    */
   boolean containsCard();
+
+  /**
+   * returns a copy of the cell. this is used for the view.
+   *
+   * @return a copy of the cell
+   */
+  BasicSanguineBoardCell getCopy();
 }

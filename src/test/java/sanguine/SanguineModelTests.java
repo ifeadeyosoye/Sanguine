@@ -6,16 +6,20 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
-import sanguine.model.BasicSanguineCard;
+import sanguine.model.BasicSanguineBoardCell;
 import sanguine.model.BasicSanguineModel;
+import sanguine.model.DeckParser;
 import sanguine.model.PlayerColor;
+import sanguine.model.SanguineBoardCell;
 import sanguine.model.SanguineCard;
 import sanguine.model.SanguinePlayer;
 import sanguine.model.TieException;
+import sanguine.view.BasicSanguineTextualView;
 
 /**
  * A class for testing the Basic SanguineModel. All tests
@@ -23,6 +27,32 @@ import sanguine.model.TieException;
  * the tests use the createDeck method to help create example games.
  */
 public class SanguineModelTests {
+  /**
+   * A helper method that creates a new sanguine player.
+   * This will be used in tests that need a valid player object.
+   * This specifically creates a red player.
+   */
+  public SanguinePlayer makeRedPlayer() throws IOException {
+    return new SanguinePlayer(
+        DeckParser.makeDeck("docs" + File.separator + "example.deck"),
+        PlayerColor.RED,
+        3
+    );
+  }
+
+  /**
+   * A helper method that creates a new sanguine player.
+   * This will be used in tests that need a valid player object.
+   * This specifically creates a blue player.
+   */
+  public SanguinePlayer makeBluePlayer() throws IOException {
+    return new SanguinePlayer(
+        DeckParser.makeDeck("docs" + File.separator + "example.deck"),
+        PlayerColor.BLUE,
+        3
+    );
+  }
+
   /**
    * This tests that the createDeck() in model is properly creating a deck.
    */
@@ -388,6 +418,37 @@ public class SanguineModelTests {
   }
 
   /**
+   * Tests that getScore is properly returning the score for a specific player in a row.
+   */
+  @Test
+  public void testGetRowScore() {
+    BasicSanguineModel model = new BasicSanguineModel();
+    try {
+      List<SanguineCard> deck1 = model.createDeck();
+      List<SanguineCard> deck2 = model.createDeck();
+      model.startGame(3, 5, deck1, deck2, 3);
+
+      assertEquals(0, model.getRowScore(PlayerColor.RED, 2));
+      assertEquals(0, model.getRowScore(PlayerColor.BLUE, 2));
+
+      // red players turn
+      // card 1 should be of value greater than 1
+      model.playTurn(0, 0, deck1.get(1));
+
+      assertEquals(1, model.getRowScore(PlayerColor.RED, 0));
+      assertEquals(0, model.getRowScore(PlayerColor.BLUE, 0));
+
+      model.playTurn(1, 4, deck2.get(1));
+
+      assertEquals(1, model.getRowScore(PlayerColor.RED, 0));
+      assertEquals(1, model.getRowScore(PlayerColor.BLUE, 1));
+
+    } catch (IOException exo) {
+      throw new IllegalArgumentException();
+    }
+  }
+
+  /**
    * Tests that getWinner returns null in the model when the game is still ongoing.
    */
   @Test
@@ -453,5 +514,73 @@ public class SanguineModelTests {
     } catch (IOException exo) {
       throw new IllegalArgumentException();
     }
+  }
+
+  /**
+   * Tests that getScore is properly returning the score for a specific player.
+   */
+  @Test
+  public void testPlaceCardLegal() {
+    //TODO: need to do!!!!
+    BasicSanguineModel model = new BasicSanguineModel();
+    try {
+      List<SanguineCard> deck1 = model.createDeck();
+      List<SanguineCard> deck2 = model.createDeck();
+      model.startGame(3, 5, deck1, deck2, 3);
+
+      SanguinePlayer bluePlayer = makeBluePlayer();
+      SanguinePlayer redPlayer = makeRedPlayer();
+
+      assertFalse(model.placeCardLegal(0, 0, deck1.getFirst(), bluePlayer));
+      assertTrue(model.placeCardLegal(0, 4, deck1.getFirst(), bluePlayer));
+
+      assertTrue(model.placeCardLegal(0, 0, deck2.getFirst(), redPlayer));
+      assertFalse(model.placeCardLegal(2, 4, deck2.getFirst(), redPlayer));
+    } catch (IOException exo) {
+      throw new IllegalArgumentException();
+    }
+  }
+
+  /**
+   * tests the method getOwnershipOfCell.
+   *
+   * @throws IOException if cannot read file.
+   */
+  @Test
+  public void testGetOwnershipOfCell() throws IOException {
+    BasicSanguineModel model = new BasicSanguineModel();
+    BasicSanguineTextualView view = new BasicSanguineTextualView(model);
+
+    List<SanguineCard> deck1 = model.createDeck();
+    List<SanguineCard> deck2 = model.createDeck();
+    model.startGame(3, 5, deck1, deck2, 3);
+
+
+    assertEquals(PlayerColor.RED, model.getOwnershipOfCell(0, 0));
+
+    model.playTurn(0, 0, deck1.get(1));
+
+    assertEquals(PlayerColor.RED, model.getOwnershipOfCell(0, 0));
+
+    assertThrows(IllegalArgumentException.class, () -> model.getOwnershipOfCell(-1, 0));
+    assertThrows(IllegalArgumentException.class, () -> model.getOwnershipOfCell(0, -1));
+  }
+
+  /**
+   * tests the observer method of gethand.
+   *
+   * @throws IOException if files is unreadable.
+   */
+  public void testGetHand() throws IOException {
+
+    BasicSanguineModel model = new BasicSanguineModel();
+    List<SanguineCard> deck1 = model.createDeck();
+    List<SanguineCard> deck2 = model.createDeck();
+    model.startGame(3, 5, deck1, deck2, 3);
+    List<SanguineCard> hand = new ArrayList<>();
+    hand.add(deck1.removeFirst());
+    hand.add(deck1.removeFirst());
+    hand.add(deck1.removeFirst());
+    assertEquals(hand, model.getPlayerHand(PlayerColor.RED));
   }
 }
