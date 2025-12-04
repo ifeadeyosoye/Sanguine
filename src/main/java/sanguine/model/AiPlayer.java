@@ -63,6 +63,7 @@ public class AiPlayer implements UserPlayer {
     }
 
     for (Listener listener : listeners) {
+      listener.pressP();
       listener.clickCard(coor.card());
       listener.clickCell(coor.row(), coor.col());
       listener.confirmMove();

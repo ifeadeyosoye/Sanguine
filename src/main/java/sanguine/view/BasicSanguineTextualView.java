@@ -47,7 +47,7 @@ public class BasicSanguineTextualView implements SanguineTextualView {
         game.append(addScore(line, board, row));
         game.append(System.lineSeparator());
       }
-    } catch (IOException exo) {
+    } catch (IllegalStateException exo) {
       throw new IllegalArgumentException("Trouble reading file");
     }
 

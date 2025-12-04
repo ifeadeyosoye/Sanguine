@@ -96,7 +96,6 @@ public class SanguinePlayerController implements Listener, StubController, Model
 
         selectedRow = row;
         selectedCol = col;
-
     }
 
     /**
@@ -154,6 +153,7 @@ public class SanguinePlayerController implements Listener, StubController, Model
     public void turnChanged(PlayerColor color) {
         if (this.color == color) {
             player.notifyTurn();
+            myTurn = true;
         }
     }
 }

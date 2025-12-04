@@ -25,16 +25,18 @@ public class SanguineViewFrame extends JFrame implements SanguineGuiView {
   private final ModelReadOnlyInterface model;
   private List<Listener> listeners =  new ArrayList<>();
   private final Listener controller;
+  private final PlayerColor color;
 
   /**
    * construcor that takes in a model and controller and assigns them, assuming they are not null.
    *
    * @param model model
    * @param controller controller
+   * @param color Player color
    *
    * @throws IOException if the deck file cannot be read when creating a default deck
    */
-  public SanguineViewFrame(ModelReadOnlyInterface model, Listener controller) throws IOException {
+  public SanguineViewFrame(ModelReadOnlyInterface model, Listener controller, PlayerColor color) throws IOException {
     if (model == null) {
       throw new IllegalArgumentException("model is null");
     }
@@ -43,8 +45,14 @@ public class SanguineViewFrame extends JFrame implements SanguineGuiView {
     }
     this.controller = controller;
     this.model = model;
+    this.color = color;
 
-    this.setTitle("Player: Red");
+    if (color == PlayerColor.RED) {
+        this.setTitle("Player: Red");
+    } else {
+        this.setTitle("Player: Blue");
+    }
+
     this.setPreferredSize(new Dimension(1000, 750));
     this.setResizable(true);
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -52,7 +60,7 @@ public class SanguineViewFrame extends JFrame implements SanguineGuiView {
     this.getContentPane().setBackground(Color.WHITE);
 
     boardPanel = new GameBoardPanel(model, controller);
-    handPanel = new CardHandPanel(model, controller);
+    handPanel = new CardHandPanel(model, controller, color);
 
     // using a pane to organize the board and hand panels
     JSplitPane splitPane = new JSplitPane(
@@ -80,12 +88,6 @@ public class SanguineViewFrame extends JFrame implements SanguineGuiView {
 
   @Override
   public void refresh() {
-    if (model.getTurn().getColor() == PlayerColor.RED) {
-      this.setTitle("Player: Red");
-    } else {
-      this.setTitle("Player: Blue");
-    }
-
     handPanel.displayHand();
 
     this.repaint();
@@ -101,5 +103,12 @@ public class SanguineViewFrame extends JFrame implements SanguineGuiView {
     if (listener == null) {
       throw new IllegalArgumentException("Listener is null");
     }
+  }
+
+  @Override
+    public void showError(String msg) {
+      javax.swing.JOptionPane.showMessageDialog(this, msg, "Message",
+              javax.swing.JOptionPane.INFORMATION_MESSAGE
+      );
   }
 }

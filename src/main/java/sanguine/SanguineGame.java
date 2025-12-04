@@ -5,10 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import sanguine.controller.SanguineStubController;
 import sanguine.controller.StubController;
-import sanguine.model.BasicSanguineModel;
-import sanguine.model.DeckParser;
-import sanguine.model.SanguineCard;
-import sanguine.model.SanguinePlayer;
+import sanguine.model.*;
 import sanguine.view.BasicSanguineTextualView;
 import sanguine.view.Listener;
 import sanguine.view.SanguineViewFrame;
@@ -52,7 +49,7 @@ public class SanguineGame {
     model.startGame(3, 5, deck, deck, 5);
 
     Listener controller = new SanguineStubController(model);
-    SanguineViewFrame view = new SanguineViewFrame(model, controller);
+    SanguineViewFrame view = new SanguineViewFrame(model, controller, PlayerColor.RED);
 
     while (!model.isGameOver()) {
       

@@ -24,4 +24,11 @@ public interface SanguineGuiView {
    * @param listener the listener to add
    */
   void subscribe(Listener listener);
+
+    /**
+     * A method that creates a pop-up on the view when a player does an action against the game's rules.
+     *
+     * @param msg the message to show the human player
+     */
+  void showError(String msg);
 }

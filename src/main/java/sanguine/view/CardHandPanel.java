@@ -18,6 +18,7 @@ public class CardHandPanel extends JPanel {
   // Private fields
   private final ModelReadOnlyInterface model;
   private final Listener controller;
+  private final PlayerColor color;
 
   /**
    * A constructor that takes in a read only version of the model.
@@ -26,7 +27,7 @@ public class CardHandPanel extends JPanel {
    * @param controller the game controller which is a listener
    * @throws IllegalArgumentException if model is null
    */
-  public CardHandPanel(ModelReadOnlyInterface model, Listener controller)
+  public CardHandPanel(ModelReadOnlyInterface model, Listener controller, PlayerColor color)
       throws IllegalArgumentException {
     if (controller == null) {
       throw new IllegalArgumentException("controller is null");
@@ -35,6 +36,7 @@ public class CardHandPanel extends JPanel {
       throw new IllegalArgumentException("Model is null!");
     }
 
+    this.color = color;
     this.controller = controller;
     this.model = model;
   }
@@ -45,7 +47,7 @@ public class CardHandPanel extends JPanel {
   public void displayHand() {
     this.setLayout(new GridLayout());
 
-    if (model.getTurn().getColor() == PlayerColor.RED) {
+    if (color == PlayerColor.RED) {
       displayRedHand();
     } else {
       displayBlueHand();
