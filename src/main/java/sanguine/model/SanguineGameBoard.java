@@ -159,7 +159,7 @@ public class SanguineGameBoard implements GameBoard {
   }
 
   @Override
-  public SanguineGameBoard getBoard() {
+  public SanguineGameBoard getBoard() throws IOException {
     SanguineGameBoard copy = new SanguineGameBoard(getRows(), getCols());
 
     for (int r = 0; r < getRows(); r++) {
@@ -170,9 +170,9 @@ public class SanguineGameBoard implements GameBoard {
           continue;
         }
 
-        //List<SanguineCard> fakeDeck = DeckParser.makeDeck("docs"
-            //+ File.separator + "example.deck");
-        SanguinePlayer tempPlayer = new SanguinePlayer(List.of(), tempCell.getColor(), 3);
+        List<SanguineCard> fakeDeck = DeckParser.makeDeck("docs"
+            + File.separator + "example.deck");
+        SanguinePlayer tempPlayer = new SanguinePlayer(fakeDeck, tempCell.getColor(), 3);
 
 
         //if the cell has a card

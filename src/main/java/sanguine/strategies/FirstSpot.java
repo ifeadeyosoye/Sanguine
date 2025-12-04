@@ -23,7 +23,7 @@ public class FirstSpot implements BasicStrategy {
    */
   @Override
   public Coordinates choose(ModelReadOnlyInterface model,
-                                        PlayerColor color) {
+                                        PlayerColor color) throws IOException {
 
     if (model == null) {
       throw new IllegalArgumentException("model cannot be null");

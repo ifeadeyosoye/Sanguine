@@ -49,6 +49,8 @@ public class BasicSanguineTextualView implements SanguineTextualView {
       }
     } catch (IllegalStateException exo) {
       throw new IllegalArgumentException("Trouble reading file");
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
 
 

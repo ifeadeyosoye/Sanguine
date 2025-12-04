@@ -31,7 +31,7 @@ public class MaximizeRowScore implements BasicStrategy {
    */
   @Override
   public Coordinates choose(ModelReadOnlyInterface model,
-                                          PlayerColor color) {
+                                          PlayerColor color) throws IOException {
 
     SanguinePlayer player = model.getTurn();
     List<SanguineCard> hand = model.getPlayerHand(color);

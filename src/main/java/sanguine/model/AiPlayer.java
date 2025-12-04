@@ -1,5 +1,6 @@
 package sanguine.model;
 
+import java.io.IOException;
 import java.util.List;
 import sanguine.strategies.BasicStrategy;
 import sanguine.strategies.Coordinates;
@@ -47,7 +48,7 @@ public class AiPlayer implements UserPlayer {
   }
 
   @Override
-  public void notifyTurn() {
+  public void notifyTurn() throws IOException {
     Coordinates coor = strat.choose(model, color);
 
     if (coor == null) {
@@ -65,7 +66,7 @@ public class AiPlayer implements UserPlayer {
     for (Listener listener : listeners) {
       listener.clickCard(coor.card());
       listener.clickCell(coor.row(), coor.col());
-        listener.pressP();
+      listener.pressP();
     }
   }
 

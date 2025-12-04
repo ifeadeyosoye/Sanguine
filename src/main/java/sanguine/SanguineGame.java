@@ -63,7 +63,7 @@ public class SanguineGame {
    * This loops through the board and finds the first valid place a player can go.
    * When it finds that place, it
    */
-  private static void canPlayTurn(BasicSanguineModel model) {
+  private static void canPlayTurn(BasicSanguineModel model) throws IOException {
     SanguinePlayer player = model.getTurn();
 
     for (int r = 0; r < 3; r++) {

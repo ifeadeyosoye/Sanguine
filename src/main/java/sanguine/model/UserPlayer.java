@@ -1,5 +1,6 @@
 package sanguine.model;
 
+import java.io.IOException;
 import sanguine.strategies.Coordinates;
 import sanguine.view.Listener;
 
@@ -14,7 +15,7 @@ public interface UserPlayer {
   /**
    * to be used when we want a player to make a move. called by controller.
    */
-  void notifyTurn();
+  void notifyTurn() throws IOException;
 
   /**
    * subscribes a Listener (the controller) to the player to listen for updates..

@@ -1,5 +1,6 @@
 package sanguine.model;
 
+import java.io.IOException;
 import sanguine.view.Listener;
 
 /**
@@ -11,7 +12,7 @@ public interface ModelListener {
    * A method that notifies listeners when the player turn has changed.
    * @param color the player's color whose turn it is
    */
-  void turnChanged(PlayerColor color);
+  void turnChanged(PlayerColor color) throws IOException;
 
 
   /**

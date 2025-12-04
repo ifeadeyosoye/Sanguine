@@ -18,7 +18,7 @@ public interface ModelReadOnlyInterface {
    *
    * @return the sanguine game board
    */
-  SanguineGameBoard getBoard();
+  SanguineGameBoard getBoard() throws IOException;
 
 
   /**

@@ -22,5 +22,5 @@ public interface BasicStrategy {
    * @throws IOException if deck object cannot be read
    */
   public Coordinates choose(ModelReadOnlyInterface model,
-                            PlayerColor color);
+                            PlayerColor color) throws IOException;
 }

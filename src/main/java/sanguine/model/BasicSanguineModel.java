@@ -45,7 +45,7 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelCon
 
 
   @Override
-  public SanguineGameBoard getBoard() {
+  public SanguineGameBoard getBoard() throws IOException {
     return board.getBoard();
   }
 
@@ -173,7 +173,7 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelCon
 
   @Override
   public void passTurn()
-      throws IllegalStateException {
+      throws IllegalStateException, IOException {
     hasGameStarted();
     changePlayer();
   }
@@ -181,7 +181,7 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelCon
   /**
    * A method that changes the current player from red to blue, or blue to red.
    */
-  private void changePlayer() {
+  private void changePlayer() throws IOException {
     if (currentPlayer == redPlayer) {
       currentPlayer = bluePlayer;
     } else {
@@ -208,7 +208,7 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelCon
   }
   @Override
   public void playTurn(int row, int col, SanguineCard card)
-      throws IllegalArgumentException, IllegalStateException {
+      throws IllegalArgumentException, IllegalStateException, IOException {
     hasGameStarted();
 
     if (card == null) {

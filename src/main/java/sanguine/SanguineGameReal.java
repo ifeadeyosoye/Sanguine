@@ -13,8 +13,12 @@ import sanguine.view.SanguineViewFrame;
 public class SanguineGameReal {
   public static void main(String[] args) throws IOException {
     SanguineModel model = new BasicSanguineModel();
+
     UserPlayer player1 = new HumanPlayer(PlayerColor.RED);
     UserPlayer player2 = new HumanPlayer(PlayerColor.BLUE);
+
+    model.startGame(3, 5, model.createDeck(), model.createDeck(), 7);
+
     SanguinePlayerController controller1 = new SanguinePlayerController(player1, model,
         PlayerColor.RED);
     SanguinePlayerController controller2 = new SanguinePlayerController(player2, model,
@@ -26,6 +30,5 @@ public class SanguineGameReal {
     controller1.setView(viewPlayer1);
     controller2.setView(viewPlayer2);
 
-    model.startGame(3, 5, model.createDeck(), model.createDeck(), 7);
   }
 }

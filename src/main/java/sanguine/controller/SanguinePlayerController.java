@@ -1,5 +1,6 @@
 package sanguine.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import sanguine.model.*;
@@ -38,10 +39,6 @@ public class SanguinePlayerController implements Listener, ModelListener {
             throw new IllegalArgumentException("Model is null!");
         }
 
-        if (view == null) {
-            throw new IllegalArgumentException("View is null!");
-        }
-
         if (color == null) {
             throw new IllegalArgumentException("Color is null!");
         }
@@ -53,7 +50,6 @@ public class SanguinePlayerController implements Listener, ModelListener {
 
         model.addControllerSubscriber(this);
         player.subscribe(this);
-        view.subscribe(this);
 
         if (this.player instanceof HumanPlayer) {
             human = true;
@@ -73,6 +69,8 @@ public class SanguinePlayerController implements Listener, ModelListener {
             throw new IllegalArgumentException("view cannot be null");
         }
         this.view = view;
+        this.view.subscribe(this);
+
     }
     @Override
     public void clickCard(SanguineCard card) {
@@ -106,9 +104,11 @@ public class SanguinePlayerController implements Listener, ModelListener {
             model.passTurn();
         } catch (IllegalStateException exo) {
             view.showError("ERROR!! Game has not been started. Try booting again.");
+        } catch (IOException e) {
+          throw new RuntimeException(e);
         }
 
-        resetAfterEveryTurn();
+      resetAfterEveryTurn();
     }
 
     @Override
@@ -135,6 +135,8 @@ public class SanguinePlayerController implements Listener, ModelListener {
             view.showError("Move is not possible! Select a new move!");
         } catch (IllegalStateException exo) {
             view.showError("ERROR!! Game has not been started. Try booting again.");
+        } catch (IOException e) {
+            throw new RuntimeException();
         }
 
         view.refresh();
@@ -142,7 +144,7 @@ public class SanguinePlayerController implements Listener, ModelListener {
     }
 
     @Override
-    public void turnChanged(PlayerColor color) {
+    public void turnChanged(PlayerColor color) throws IOException {
         if (this.color == color) {
             player.notifyTurn();
             myTurn = true;

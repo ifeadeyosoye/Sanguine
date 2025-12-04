@@ -80,8 +80,5 @@ public class SanguineStubController implements StubController, Listener {
     System.out.println("Pressed key 'm' for move.");
   }
 
-  @Override
-    public void confirmMove() {
-      System.out.println("Move confirmed!");
-  }
+
 }

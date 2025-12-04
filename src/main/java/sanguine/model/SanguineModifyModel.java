@@ -59,7 +59,7 @@ public interface SanguineModifyModel<C extends Card> {
    * @throws IllegalArgumentException If current player is the same as given player
    * @throws IllegalStateException    when the game has not started
    */
-  void passTurn() throws IllegalStateException;
+  void passTurn() throws IllegalStateException, IOException;
 
   /**
    * A method for when the player takes a turn to place a card down.
@@ -75,6 +75,6 @@ public interface SanguineModifyModel<C extends Card> {
    *                                  or when the game has not started
    */
   void playTurn(int row, int col, C card) throws IllegalArgumentException,
-      IllegalStateException;
+      IllegalStateException, IOException;
 
 }
