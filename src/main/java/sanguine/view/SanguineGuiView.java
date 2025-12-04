@@ -31,4 +31,13 @@ public interface SanguineGuiView {
      * @param msg the message to show the human player
      */
   void showError(String msg);
+
+    /**
+     * A method that changes whether a view frame is clickable or not
+     *
+     * <p>This is used when we don't want the current player to click on the opposite player's view.</p>
+     *
+     * @param choice whether to make the view interactable
+     */
+  void changeInteraction(boolean choice)
 }

@@ -65,20 +65,6 @@ public class SanguinePlayerController implements Listener, ModelListener {
         }
     }
 
-    /**
-     * IFE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     * these methods need to be implemented. im not leaving them to you, WE will be working on them
-     * together. I think we will need more methods, but i forgot what they were.
-     * im soooo tired to think.
-     */
-
-    /**
-     * A method that defines what a subscriber should do when a card is clicked, given that card.
-     *  the SanguineCard they recieve will only be from their hand. wont be possible to get an ops
-     *  card.
-     *
-     * @param card the clicked SanguineGame card
-     */
     @Override
     public void clickCard(SanguineCard card) {
         if (!myTurn) {
@@ -88,12 +74,6 @@ public class SanguinePlayerController implements Listener, ModelListener {
         selectedCard = card;
     }
 
-    /**
-     * Defines what a subscriber should do when a cell is clicked, given cell coordinates.
-     *
-     * @param row the cell row
-     * @param col the cell column
-     */
     @Override
     public void clickCell(int row, int col) {
         if (!myTurn) {
@@ -105,10 +85,6 @@ public class SanguinePlayerController implements Listener, ModelListener {
         selectedCol = col;
     }
 
-
-    /**
-     * A method that defines what a subscriber should do when 'p' is pressed on the keyboard.
-     */
     @Override
     public void pressP() {
         if (!myTurn) {
@@ -124,9 +100,6 @@ public class SanguinePlayerController implements Listener, ModelListener {
         resetAfterEveryTurn();
     }
 
-    /**
-     * A method that defines what a subscriber should do when 'm' is pressed on the keyboard.
-     */
     @Override
     public void pressM() {
         if (!myTurn) {
@@ -181,7 +154,4 @@ public class SanguinePlayerController implements Listener, ModelListener {
         selectedRow = -1;
         selectedCol = -1;
     }
-
-
-
 }

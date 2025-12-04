@@ -1,13 +1,11 @@
 package sanguine.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
-import javax.swing.JSplitPane;
+import javax.swing.*;
+
 import sanguine.model.ModelReadOnlyInterface;
 import sanguine.model.PlayerColor;
 
@@ -110,5 +108,19 @@ public class SanguineViewFrame extends JFrame implements SanguineGuiView {
       javax.swing.JOptionPane.showMessageDialog(this, msg, "Message",
               javax.swing.JOptionPane.INFORMATION_MESSAGE
       );
+  }
+
+  @Override
+  public void changeInteraction(boolean choice) {
+      setPanelEnabled(boardPanel, choice);
+      setPanelEnabled(handPanel, choice);
+  }
+
+  private void setPanelEnabled(JPanel panel, boolean enabled) {
+      panel.setEnabled(enabled);
+
+      for (Component comp : panel.getComponents()) {
+          comp.setEnabled(enabled);
+      }
   }
 }
