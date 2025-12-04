@@ -33,8 +33,4 @@ public interface Listener {
    */
   public void pressM();
 
-  /**
-   * A method that is called when a player confirms that their move decision is final.
-   */
-  public void confirmMove();
 }

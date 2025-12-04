@@ -19,7 +19,7 @@ public class SanguinePlayerController implements Listener, StubController, Model
     private int selectedRow = -1;
     private int selectedCol = -1;
     private boolean myTurn;
-    private boolean human;
+    private final boolean human;
 
 
     /**
@@ -71,19 +71,20 @@ public class SanguinePlayerController implements Listener, StubController, Model
      * together. I think we will need more methods, but i forgot what they were.
      * im soooo tired to think.
      */
+
     /**
      * A method that defines what a subscriber should do when a card is clicked, given that card.
+     *  the SanguineCard they recieve will only be from their hand. wont be possible to get an ops
+     *  card.
      *
      * @param card the clicked SanguineGame card
      */
     @Override
     public void clickCard(SanguineCard card) {
         if (!myTurn) {
-
+            view.showError("not your turn");
+            return;
         }
-
-        // if they try to click on opponents card, do warning pop up
-
         selectedCard = card;
     }
 
@@ -96,14 +97,14 @@ public class SanguinePlayerController implements Listener, StubController, Model
     @Override
     public void clickCell(int row, int col) {
         if (!myTurn) {
-            //TODO: show error pop up on view
+            view.showError("not your turn");
+            return;
         }
-
-        // TODO: if cell not empty, show error pop up on view
 
         selectedRow = row;
         selectedCol = col;
     }
+
 
     /**
      * A method that defines what a subscriber should do when 'p' is pressed on the keyboard.
@@ -120,6 +121,7 @@ public class SanguinePlayerController implements Listener, StubController, Model
         } catch (IllegalStateException exo) {
             // forgot what goes here... but throws ISE if game has not been started
         }
+        resetAfterEveryTurn();
     }
 
     /**
@@ -133,33 +135,30 @@ public class SanguinePlayerController implements Listener, StubController, Model
         }
 
         if (selectedCard == null || selectedRow == -1 || selectedCol == -1) {
+            //ai passes by submitting -1 -1 null
             if (!human) {
                 model.passTurn();
                 return;
             }
             view.showError("card or position invalid");
-
+            return;
         }
 
         try {
             model.playTurn(selectedRow, selectedCol, selectedCard);
-        } catch (IllegalArgumentException exo) {
-            // MOVE IS INVALID
-        } catch (IllegalStateException exo) {
-            // GAME HAS NOT BEEN STARTED
+        } catch (IllegalArgumentException | IllegalStateException exo) {
+            view.showError(exo.getMessage());
+            return;
         }
-    }
-
-    /**
-     * A method that is called when a player confirms that their move decision is final.
-     */
-    @Override
-    public void confirmMove() {
+        view.refresh();
+        resetAfterEveryTurn();
 
     }
 
+
     @Override
-    public void playGame(int rows, int cols, List<SanguineCard> deck1, List<SanguineCard> deck2, int handSize) {
+    public void playGame(int rows, int cols, List<SanguineCard> deck1,
+                         List<SanguineCard> deck2, int handSize) {
 
     }
 
@@ -171,4 +170,25 @@ public class SanguinePlayerController implements Listener, StubController, Model
         }
         view.refresh();
     }
+
+    @Override
+    public void notifyGameEnded() {
+        if (!model.isGameOver()) {
+            return;
+        }
+
+        Player winningplayer = model.getWinner();
+        int winningScore = model.getScore(winningplayer.getColor());
+        view.showError("game is over");
+
+    }
+
+    private void resetAfterEveryTurn() {
+        selectedCard = null;
+        selectedRow = -1;
+        selectedCol = -1;
+    }
+
+
+
 }

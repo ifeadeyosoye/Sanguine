@@ -12,4 +12,11 @@ public interface ModelListener {
    * @param color the player's color whose turn it is
    */
   void turnChanged(PlayerColor color);
+
+
+  /**
+   * this tells the controller to tell the player that the game is over. puts a message on the
+   * screen.
+   */
+  void notifyGameEnded();
 }

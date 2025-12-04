@@ -231,6 +231,9 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelCon
   public boolean isGameOver() throws IllegalStateException {
     hasGameStarted();
 
+    for (ModelListener listener : listeners) {
+      listener.notifyGameEnded();
+    }
     return consecutivePasses >= 2;
   }
 
