@@ -19,6 +19,7 @@ public class SanguinePlayerController implements Listener, StubController, Model
     private int selectedRow = -1;
     private int selectedCol = -1;
     private boolean myTurn;
+    private boolean human;
 
 
     /**
@@ -56,6 +57,12 @@ public class SanguinePlayerController implements Listener, StubController, Model
         model.addControllerSubscriber(this);
         player.subscribe(this);
         view.subscribe(this);
+
+        if (this.player instanceof HumanPlayer) {
+            human = true;
+        } else {
+            human = false;
+        }
     }
 
     /**
@@ -72,7 +79,7 @@ public class SanguinePlayerController implements Listener, StubController, Model
     @Override
     public void clickCard(SanguineCard card) {
         if (!myTurn) {
-            //TODO: show error pop up on view
+
         }
 
         // if they try to click on opponents card, do warning pop up
@@ -104,6 +111,7 @@ public class SanguinePlayerController implements Listener, StubController, Model
     @Override
     public void pressP() {
         if (!myTurn) {
+            view.showError("not your turn");
             return;
         }
 
@@ -120,11 +128,17 @@ public class SanguinePlayerController implements Listener, StubController, Model
     @Override
     public void pressM() {
         if (!myTurn) {
+            view.showError("not your turn");
             return;
         }
 
         if (selectedCard == null || selectedRow == -1 || selectedCol == -1) {
-            // throw iae??
+            if (!human) {
+                model.passTurn();
+                return;
+            }
+            view.showError("card or position invalid");
+
         }
 
         try {
@@ -155,5 +169,6 @@ public class SanguinePlayerController implements Listener, StubController, Model
             player.notifyTurn();
             myTurn = true;
         }
+        view.refresh();
     }
 }
