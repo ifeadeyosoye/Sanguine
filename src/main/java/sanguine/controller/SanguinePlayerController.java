@@ -9,7 +9,7 @@ import sanguine.view.SanguineGuiView;
 /**
  * ....
  */
-public class SanguinePlayerController implements Listener, StubController, ModelListener {
+public class SanguinePlayerController implements Listener, ModelListener {
 
     private final SanguineGuiView view;
     private final SanguineModel model;
@@ -152,13 +152,6 @@ public class SanguinePlayerController implements Listener, StubController, Model
         }
         view.refresh();
         resetAfterEveryTurn();
-
-    }
-
-
-    @Override
-    public void playGame(int rows, int cols, List<SanguineCard> deck1,
-                         List<SanguineCard> deck2, int handSize) {
 
     }
 
