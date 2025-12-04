@@ -1,6 +1,7 @@
 package sanguine.model;
 
 import sanguine.strategies.Coordinates;
+import sanguine.view.Listener;
 
 /**
  * UserPlayer is a representation of a player who decides to make a move.
@@ -9,7 +10,16 @@ import sanguine.strategies.Coordinates;
  * or inputs commands or an AI player that automatically decides what actions to take.
  */
 public interface UserPlayer {
+
+  /**
+   * to be used when we want a player to make a move. called by controller.
+   */
   void notifyTurn();
 
-
+  /**
+   * subscribes a Listener (the controller) to the player to listen for updates..
+   *
+   * @param listener a controller
+   */
+  void subscribe(Listener listener);
 }

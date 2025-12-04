@@ -1,5 +1,7 @@
 package sanguine.model;
 
+import sanguine.view.Listener;
+
 /**
  * A representation of a human player that only has a player color.
  *
@@ -27,5 +29,10 @@ public class HumanPlayer implements UserPlayer {
   @Override
   public void notifyTurn() {
     // Nothing is needed here because the view deals with getting input from a human player.
+  }
+
+  @Override
+  public void subscribe(Listener listener) {
+    //nothing needs to happen because the view listens to clicks from human players.
   }
 }

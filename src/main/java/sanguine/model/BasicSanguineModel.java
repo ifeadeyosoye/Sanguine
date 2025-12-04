@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.management.modelmbean.ModelMBeanInfoSupport;
+import sanguine.controller.ModelListener;
 import sanguine.strategies.SimulatePlacement;
 
 /**
@@ -21,7 +23,7 @@ import sanguine.strategies.SimulatePlacement;
  * Influencing one cell
  * etc...
  */
-public class BasicSanguineModel implements SanguineModel<SanguineCard> {
+public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelControllerPublisher {
 
   private SanguineGameBoard board;
   private boolean gameStarted; // if the game has been started at one point in time
@@ -32,7 +34,7 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard> {
   private SanguinePlayer bluePlayer;
   // INVARIANT: maxHandSize is always > than zero.
   private int maxHandSize;
-
+  private List<ModelListener> listeners;
 
   /**
    * construcotr for basic sanguine model. initializes variables that are not passed into the
@@ -41,6 +43,7 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard> {
   public BasicSanguineModel() {
     gameStarted = false;
     consecutivePasses = 0;
+    this.listeners = new ArrayList<>();
   }
 
 
@@ -190,8 +193,23 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard> {
     }
 
     consecutivePasses++;
+
+    for (ModelListener listener : listeners) {
+      listener.turnChanged(currentPlayer.getColor());
+    }
+
   }
 
+  @Override
+  public void addControllerSubscriber(ModelListener listener) {
+    if (listener == null) {
+      throw new IllegalArgumentException("listener is null");
+    }
+    this.listeners.add(listener);
+  }
+  private void notify(PlayerColor color) {
+
+  }
   @Override
   public void playTurn(int row, int col, SanguineCard card)
       throws IllegalArgumentException, IllegalStateException {

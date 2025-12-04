@@ -7,5 +7,5 @@ package sanguine.model;
  * @param <C> type SanguineCard
  */
 public interface SanguineModel<C extends SanguineCard> extends
-    SanguineModifyModel<C>, ModelReadOnlyInterface{
+    SanguineModifyModel<C>, ModelReadOnlyInterface, ModelControllerPublisher{
 }

@@ -75,6 +75,7 @@ public class AiPlayer implements UserPlayer {
    *
    * @param listener the listener that will subscribe to this class
    */
+  @Override
   public void subscribe(Listener listener) {
     if (listener == null) {
       throw new IllegalArgumentException("Listener is null!");

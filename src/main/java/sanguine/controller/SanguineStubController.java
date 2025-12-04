@@ -79,4 +79,12 @@ public class SanguineStubController implements StubController, Listener {
   public void pressM() {
     System.out.println("Pressed key 'm' for move.");
   }
+
+  /**
+   * A method that is called when a player confirms that their move decision is final.
+   */
+  @Override
+  public void confirmMove() {
+
+  }
 }
