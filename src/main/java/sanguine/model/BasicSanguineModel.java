@@ -175,7 +175,6 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelCon
   public void passTurn()
       throws IllegalStateException {
     hasGameStarted();
-
     changePlayer();
   }
 

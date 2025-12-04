@@ -68,16 +68,17 @@ public class SanguinePlayerController implements Listener, ModelListener {
     @Override
     public void clickCard(SanguineCard card) {
         if (!myTurn) {
-            view.showError("not your turn");
+            view.showError("Not your turn!");
             return;
         }
+
         selectedCard = card;
     }
 
     @Override
     public void clickCell(int row, int col) {
         if (!myTurn) {
-            view.showError("not your turn");
+            view.showError("Not your turn!");
             return;
         }
 
@@ -88,44 +89,56 @@ public class SanguinePlayerController implements Listener, ModelListener {
     @Override
     public void pressP() {
         if (!myTurn) {
-            view.showError("not your turn");
+            view.showError("Not your turn!");
             return;
         }
 
         try {
             model.passTurn();
         } catch (IllegalStateException exo) {
-            // forgot what goes here... but throws ISE if game has not been started
+            view.showError("ERROR!! Game has not been started. Try booting again.");
         }
+
         resetAfterEveryTurn();
     }
 
     @Override
     public void pressM() {
         if (!myTurn) {
-            view.showError("not your turn");
+            view.showError("Not your turn!");
             return;
         }
 
         if (selectedCard == null || selectedRow == -1 || selectedCol == -1) {
-            //ai passes by submitting -1 -1 null
+            // AI already passes by submitting -1 -1 null
             if (!human) {
                 model.passTurn();
                 return;
             }
-            view.showError("card or position invalid");
+
+            view.showError("You have not selected a card/cell! " +
+                    "Make sure your desired choice is highlighted yellow!");
+            return;
+        }
+
+        try {
+            model.placeCardLegal(selectedRow, selectedCol, selectedCard,
+                    new SanguinePlayer(List.of(), color, 7));
+        } catch (IllegalArgumentException exo) {
+            view.showError("Move is not possible! select a new move!");
+            resetAfterEveryTurn();
             return;
         }
 
         try {
             model.playTurn(selectedRow, selectedCol, selectedCard);
         } catch (IllegalArgumentException | IllegalStateException exo) {
-            view.showError(exo.getMessage());
-            return;
+            // we checked if the move is valid already so the move must be valid
+            // the only error this can throw is ISE if the game has not been started
+            view.showError("ERROR!! Game has not been started. Try booting again.");
         }
         view.refresh();
         resetAfterEveryTurn();
-
     }
 
     @Override
@@ -134,6 +147,7 @@ public class SanguinePlayerController implements Listener, ModelListener {
             player.notifyTurn();
             myTurn = true;
         }
+
         view.refresh();
     }
 
@@ -145,8 +159,12 @@ public class SanguinePlayerController implements Listener, ModelListener {
 
         Player winningplayer = model.getWinner();
         int winningScore = model.getScore(winningplayer.getColor());
-        view.showError("game is over");
 
+        if (winningplayer.getColor() == PlayerColor.RED) {
+            view.showError("Game over, Red Player won! Red's Score: " + winningScore);
+        } else {
+            view.showError("Game over, Blue Player won! Blue's Score: " + winningScore);
+        }
     }
 
     private void resetAfterEveryTurn() {

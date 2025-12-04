@@ -39,5 +39,5 @@ public interface SanguineGuiView {
      *
      * @param choice whether to make the view interactable
      */
-  void changeInteraction(boolean choice)
+  void changeInteraction(boolean choice);
 }
