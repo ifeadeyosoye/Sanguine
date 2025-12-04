@@ -11,7 +11,7 @@ import sanguine.view.SanguineGuiView;
  */
 public class SanguinePlayerController implements Listener, ModelListener {
 
-    private final SanguineGuiView view;
+    private SanguineGuiView view;
     private final SanguineModel model;
     private final UserPlayer player;
     private final PlayerColor color;
@@ -27,11 +27,9 @@ public class SanguinePlayerController implements Listener, ModelListener {
      *
      * @param player the UserPlayer for this controller
      * @param model the game model
-     * @param view the game view
      * @param color the player's color
      */
-    public SanguinePlayerController(UserPlayer player, SanguineModel model, SanguineGuiView view,
-                                    PlayerColor color) {
+    public SanguinePlayerController(UserPlayer player, SanguineModel model, PlayerColor color) {
         if (player == null) {
             throw new IllegalArgumentException("Player is null!");
         }
@@ -51,7 +49,6 @@ public class SanguinePlayerController implements Listener, ModelListener {
 
         this.player = player;
         this.model = model;
-        this.view = view;
         this.color = color;
 
         model.addControllerSubscriber(this);
@@ -65,6 +62,18 @@ public class SanguinePlayerController implements Listener, ModelListener {
         }
     }
 
+    /**
+     * this is used because the controller needs the view and the view needs the controller. so we
+     * opted to have the controller initialize the view in this method, not the constructor.
+     *
+     * @param view view
+     */
+    public void setView(SanguineGuiView view) {
+        if (view == null) {
+            throw new IllegalArgumentException("view cannot be null");
+        }
+        this.view = view;
+    }
     @Override
     public void clickCard(SanguineCard card) {
         if (!myTurn) {
