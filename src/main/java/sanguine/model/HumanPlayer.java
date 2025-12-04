@@ -23,9 +23,9 @@ public class HumanPlayer implements UserPlayer {
     if (color == null) {
       throw new IllegalArgumentException("Player color is null!");
     }
-
     this.color = color;
   }
+
   @Override
   public void notifyTurn() {
     // Nothing is needed here because the view deals with getting input from a human player.

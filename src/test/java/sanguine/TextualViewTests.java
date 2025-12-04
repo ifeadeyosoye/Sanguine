@@ -76,7 +76,8 @@ public class TextualViewTests {
    * @param blueDeck deck 2
    */
   private void defaultMove(BasicSanguineModel model, List<SanguineCard> redDeck,
-                                BasicSanguineTextualView view, List<SanguineCard> blueDeck) {
+                                BasicSanguineTextualView view, List<SanguineCard> blueDeck)
+      throws IOException {
     System.out.println(view.toString());
     model.playTurn(0, 0, redDeck.removeFirst());
 

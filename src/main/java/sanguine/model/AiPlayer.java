@@ -81,7 +81,6 @@ public class AiPlayer implements UserPlayer {
     if (listener == null) {
       throw new IllegalArgumentException("Listener is null!");
     }
-
     listeners.add(listener);
   }
 }

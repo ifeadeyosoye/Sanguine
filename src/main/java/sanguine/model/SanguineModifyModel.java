@@ -44,7 +44,7 @@ public interface SanguineModifyModel<C extends Card> {
    */
   void startGame(int rows, int cols, List<C> deck1,
                  List<C> deck2, int handSize)
-      throws IllegalArgumentException, IllegalStateException;
+      throws IllegalArgumentException, IllegalStateException, IOException;
 
   /**
    * Creates a new deck for a player if their deck was not specified.

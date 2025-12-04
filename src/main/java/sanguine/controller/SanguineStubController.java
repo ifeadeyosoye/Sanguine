@@ -1,5 +1,6 @@
 package sanguine.controller;
 
+import java.io.IOException;
 import java.util.List;
 import sanguine.model.SanguineCard;
 import sanguine.model.SanguineModel;
@@ -48,7 +49,7 @@ public class SanguineStubController implements StubController, Listener {
 
   @Override
   public void playGame(int rows, int cols, List<SanguineCard> deck1, List<SanguineCard> deck2,
-                       int handSize) {
+                       int handSize) throws IOException {
     if (view == null) {
       throw new IllegalStateException("controller needs a view");
     }

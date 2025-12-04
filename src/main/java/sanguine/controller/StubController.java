@@ -1,5 +1,6 @@
 package sanguine.controller;
 
+import java.io.IOException;
 import java.util.List;
 import sanguine.model.SanguineCard;
 import sanguine.model.SanguineModel;
@@ -21,5 +22,5 @@ public interface StubController {
    * @param handSize the max hand size for each player
    */
   void playGame(int rows, int cols, List<SanguineCard> deck1, List<SanguineCard> deck2,
-                int handSize);
+                int handSize) throws IOException;
 }

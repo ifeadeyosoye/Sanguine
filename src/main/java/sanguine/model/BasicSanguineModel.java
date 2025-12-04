@@ -52,7 +52,7 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelCon
   @Override
   public void startGame(int rows, int cols, List<SanguineCard> deck1,
                         List<SanguineCard> deck2, int handSize)
-      throws IllegalArgumentException, IllegalStateException {
+      throws IllegalArgumentException, IllegalStateException, IOException {
 
     if (gameStarted) {
       throw new IllegalStateException("Game has already been started!");
@@ -93,6 +93,10 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelCon
     currentPlayer = redPlayer;
     this.maxHandSize = handSize;
     gameStarted = true;
+
+    for (ModelListener listener : listeners) {
+      listener.turnChanged(currentPlayer.getColor());
+    }
   }
 
   /**
