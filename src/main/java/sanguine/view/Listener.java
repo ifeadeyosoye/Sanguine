@@ -32,5 +32,4 @@ public interface Listener {
    * A method that defines what a subscriber should do when 'm' is pressed on the keyboard.
    */
   public void pressM();
-
 }

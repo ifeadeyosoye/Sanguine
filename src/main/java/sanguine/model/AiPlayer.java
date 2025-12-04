@@ -57,16 +57,15 @@ public class AiPlayer implements UserPlayer {
     if (coor.col() == -1 || coor.row() == -1 || coor.card() == null) {
       for (Listener listener : listeners) {
         // pass the AI player's turn
-        listener.pressP();
+        listener.pressM();
         return;
       }
     }
 
     for (Listener listener : listeners) {
-      listener.pressP();
       listener.clickCard(coor.card());
       listener.clickCell(coor.row(), coor.col());
-      listener.confirmMove();
+        listener.pressP();
     }
   }
 

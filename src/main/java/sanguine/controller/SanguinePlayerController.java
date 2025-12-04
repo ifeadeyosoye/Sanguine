@@ -121,7 +121,6 @@ public class SanguinePlayerController implements Listener, ModelListener {
         if (selectedCard == null || selectedRow == -1 || selectedCol == -1) {
             // AI already passes by submitting -1 -1 null
             if (!human) {
-                model.passTurn();
                 return;
             }
 
@@ -131,21 +130,13 @@ public class SanguinePlayerController implements Listener, ModelListener {
         }
 
         try {
-            model.placeCardLegal(selectedRow, selectedCol, selectedCard,
-                    new SanguinePlayer(List.of(), color, 7));
-        } catch (IllegalArgumentException exo) {
-            view.showError("Move is not possible! select a new move!");
-            resetAfterEveryTurn();
-            return;
-        }
-
-        try {
             model.playTurn(selectedRow, selectedCol, selectedCard);
-        } catch (IllegalArgumentException | IllegalStateException exo) {
-            // we checked if the move is valid already so the move must be valid
-            // the only error this can throw is ISE if the game has not been started
+        } catch (IllegalArgumentException exo) {
+            view.showError("Move is not possible! Select a new move!");
+        } catch (IllegalStateException exo) {
             view.showError("ERROR!! Game has not been started. Try booting again.");
         }
+
         view.refresh();
         resetAfterEveryTurn();
     }
@@ -155,6 +146,10 @@ public class SanguinePlayerController implements Listener, ModelListener {
         if (this.color == color) {
             player.notifyTurn();
             myTurn = true;
+            view.changeInteraction(true);
+        } else {
+            myTurn = false;
+            view.changeInteraction(false);
         }
 
         view.refresh();
