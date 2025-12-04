@@ -1,7 +1,5 @@
 package sanguine.model;
 
-import sanguine.controller.ModelListener;
-
 public interface ModelControllerPublisher {
 
 

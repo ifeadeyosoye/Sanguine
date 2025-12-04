@@ -87,4 +87,9 @@ public class SanguineStubController implements StubController, Listener {
   public void confirmMove() {
 
   }
+
+  @Override
+    public void confirmMove() {
+      System.out.println("Move confirmed!");
+  }
 }

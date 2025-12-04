@@ -1,6 +1,4 @@
-package sanguine.controller;
-
-import sanguine.model.PlayerColor;
+package sanguine.model;
 
 /**
  * this will be impleneted by a controller. listens to the model for updates on when the turn is
