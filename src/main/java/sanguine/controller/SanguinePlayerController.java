@@ -1,57 +1,63 @@
 package sanguine.controller;
 
 import java.util.List;
-import sanguine.model.Player;
-import sanguine.model.PlayerColor;
-import sanguine.model.SanguineCard;
-import sanguine.model.SanguineModel;
-import sanguine.model.UserPlayer;
+
+import sanguine.model.*;
 import sanguine.view.Listener;
 import sanguine.view.SanguineGuiView;
 
-public class SanguinePlayerController implements Listener, ModelListener{
+/**
+ * ....
+ */
+public class SanguinePlayerController implements Listener, StubController, ModelListener {
 
-    private SanguineGuiView view;
-    private SanguineModel model;
-    private UserPlayer player;
-    private PlayerColor color;
+    private final SanguineGuiView view;
+    private final SanguineModel model;
+    private final UserPlayer player;
+    private final PlayerColor color;
+    private SanguineCard selectedCard;
+    private int selectedRow = -1;
+    private int selectedCol = -1;
+    private boolean myTurn;
 
+
+    /**
+     * A constructor that creates a controller for a specific player using the model, view, player and their color.
+     *
+     * @param player the UserPlayer for this controller
+     * @param model the game model
+     * @param view the game view
+     * @param color the player's color
+     */
     public SanguinePlayerController(UserPlayer player, SanguineModel model, SanguineGuiView view,
                                     PlayerColor color) {
         if (player == null) {
-            throw new IllegalArgumentException("player null");
+            throw new IllegalArgumentException("Player is null!");
         }
-        player.subscribe(this);
-        this.player = player;
 
         if (model == null) {
-            throw new IllegalArgumentException("model null");
+            throw new IllegalArgumentException("Model is null!");
         }
-        this.model = model;
-        subscribe();
 
         if (view == null) {
-            throw new IllegalArgumentException("view null");
+            throw new IllegalArgumentException("View is null!");
         }
-        this.view = view;
 
         if (color == null) {
-            throw new IllegalArgumentException("color is null");
+            throw new IllegalArgumentException("Color is null!");
         }
+
+
+        this.player = player;
+        this.model = model;
+        this.view = view;
         this.color = color;
+
+        model.addControllerSubscriber(this);
+        player.subscribe(this);
+        view.subscribe(this);
     }
 
-    /**
-     * tells the controller to notify its player when its their turn.
-     *
-     * @param color of the current player. controller will notify its player if their colors match.
-     */
-    @Override
-    public void turnChanged(PlayerColor color) {
-        if (this.color == color) {
-            player.notifyTurn();
-        }
-    }
     /**
      * IFE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      * these methods need to be implemented. im not leaving them to you, WE will be working on them
@@ -65,7 +71,13 @@ public class SanguinePlayerController implements Listener, ModelListener{
      */
     @Override
     public void clickCard(SanguineCard card) {
+        if (!myTurn) {
+            //TODO: show error pop up on view
+        }
 
+        // if they try to click on opponents card, do warning pop up
+
+        selectedCard = card;
     }
 
     /**
@@ -76,6 +88,14 @@ public class SanguinePlayerController implements Listener, ModelListener{
      */
     @Override
     public void clickCell(int row, int col) {
+        if (!myTurn) {
+            //TODO: show error pop up on view
+        }
+
+        // TODO: if cell not empty, show error pop up on view
+
+        selectedRow = row;
+        selectedCol = col;
 
     }
 
@@ -84,7 +104,15 @@ public class SanguinePlayerController implements Listener, ModelListener{
      */
     @Override
     public void pressP() {
+        if (!myTurn) {
+            return;
+        }
 
+        try {
+            model.passTurn();
+        } catch (IllegalStateException exo) {
+            // forgot what goes here... but throws ISE if game has not been started
+        }
     }
 
     /**
@@ -92,7 +120,21 @@ public class SanguinePlayerController implements Listener, ModelListener{
      */
     @Override
     public void pressM() {
+        if (!myTurn) {
+            return;
+        }
 
+        if (selectedCard == null || selectedRow == -1 || selectedCol == -1) {
+            // throw iae??
+        }
+
+        try {
+            model.playTurn(selectedRow, selectedCol, selectedCard);
+        } catch (IllegalArgumentException exo) {
+            // MOVE IS INVALID
+        } catch (IllegalStateException exo) {
+            // GAME HAS NOT BEEN STARTED
+        }
     }
 
     /**
@@ -103,13 +145,15 @@ public class SanguinePlayerController implements Listener, ModelListener{
 
     }
 
-
-    /**
-     * subscribes the controller to the model. dont need to check for null model becuase the
-     * constructor does that.
-     */
     @Override
-    public void subscribe() {
-        this.model.addControllerSubscriber(this);
+    public void playGame(int rows, int cols, List<SanguineCard> deck1, List<SanguineCard> deck2, int handSize) {
+
+    }
+
+    @Override
+    public void turnChanged(PlayerColor color) {
+        if (this.color == color) {
+            player.notifyTurn();
+        }
     }
 }

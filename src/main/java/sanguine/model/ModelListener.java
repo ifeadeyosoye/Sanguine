@@ -1,19 +1,15 @@
 package sanguine.model;
 
+import sanguine.view.Listener;
+
 /**
  * this will be impleneted by a controller. listens to the model for updates on when the turn is
  * changed.
  */
 public interface ModelListener {
-
   /**
-   * subscribes the controller to the model.
-   */
-  void subscribe();
-
-  /**
-   * tells the controller to notify its player when its their turn.
-   * @param color
+   * A method that notifies listeners when the player turn has changed.
+   * @param color the player's color whose turn it is
    */
   void turnChanged(PlayerColor color);
 }

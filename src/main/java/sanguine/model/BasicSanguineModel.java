@@ -21,7 +21,7 @@ import java.util.List;
  * etc...
  */
 public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelControllerPublisher {
-
+    //TODO: need to notify player after every move, not make a private method for it.
   private SanguineGameBoard board;
   private boolean gameStarted; // if the game has been started at one point in time
   // INVARIANT: consecutivePasses is always >= to zero.
