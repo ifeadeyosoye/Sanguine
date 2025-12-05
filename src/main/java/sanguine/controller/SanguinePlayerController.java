@@ -71,6 +71,13 @@ public class SanguinePlayerController implements Listener, ModelListener {
         this.view = view;
         this.view.subscribe(this);
 
+        if (model.getTurn().getColor() == PlayerColor.RED) {
+            myTurn = true;
+            view.changeInteraction(true);
+        } else {
+            myTurn = false;
+            view.changeInteraction(false);
+        }
     }
     @Override
     public void clickCard(SanguineCard card) {
@@ -102,13 +109,16 @@ public class SanguinePlayerController implements Listener, ModelListener {
 
         try {
             model.passTurn();
+            view.refresh();
         } catch (IllegalStateException exo) {
             view.showError("ERROR!! Game has not been started. Try booting again.");
         } catch (IOException e) {
           throw new RuntimeException(e);
         }
 
-      resetAfterEveryTurn();
+        resetAfterEveryTurn();
+        view.removeHighlight();
+        view.refresh();
     }
 
     @Override
@@ -139,6 +149,7 @@ public class SanguinePlayerController implements Listener, ModelListener {
             throw new RuntimeException();
         }
 
+        view.removeHighlight(); // TODO not working for card but works for cell.
         view.refresh();
         resetAfterEveryTurn();
     }

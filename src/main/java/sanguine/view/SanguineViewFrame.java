@@ -87,6 +87,7 @@ public class SanguineViewFrame extends JFrame implements SanguineGuiView {
   @Override
   public void refresh() {
     handPanel.displayHand();
+    //boardPanel.displayBoard();
 
     this.repaint();
   }
@@ -125,5 +126,12 @@ public class SanguineViewFrame extends JFrame implements SanguineGuiView {
               setPanelEnabled(comp, enabled);
           }
       }
+  }
+
+  @Override
+  public void removeHighlight() {
+    handPanel.removeHighlight();
+    // this will unhighlight all cells
+    boardPanel.displayBoard();
   }
 }

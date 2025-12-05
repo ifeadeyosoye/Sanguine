@@ -64,11 +64,13 @@ public class CardHandPanel extends JPanel {
    */
   private void displayBlueHand() {
     List<SanguineCard> blueHand = model.getPlayerHand(PlayerColor.BLUE);
+    //panels.clear();
 
     for (SanguineCard card : blueHand) {
       CardPanel cardPanel = new CardPanel(card, PlayerColor.BLUE);
       cardPanel.addMouseListener(new CardClickListener(List.of(controller), card, cardPanel));
       this.add(cardPanel);
+      //panels.add(cardPanel);
     }
   }
 
@@ -77,11 +79,24 @@ public class CardHandPanel extends JPanel {
    */
   private void displayRedHand() {
     List<SanguineCard> redHand = model.getPlayerHand(PlayerColor.RED);
+    //panels.clear();
 
     for (SanguineCard card : redHand) {
       CardPanel cardPanel = new CardPanel(card, PlayerColor.RED);
       cardPanel.addMouseListener(new CardClickListener(List.of(controller), card, cardPanel));
       this.add(cardPanel);
+      //panels.add(cardPanel);
     }
+  }
+
+  /**
+   * A method that resets the highlighting of the cards in the card hand panel.
+   */
+  public void removeHighlight() {
+      for (Component card : this.getComponents()) {
+          if (card instanceof CardPanel) {
+              ((CardPanel) card).removeHighlight();
+          }
+      }
   }
 }

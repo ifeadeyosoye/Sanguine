@@ -72,6 +72,14 @@ public class CardPanel extends JPanel {
     }
   }
 
+  /**
+   * A method that unhighlights a card.
+   */
+  public void removeHighlight() {
+      setBorder(BorderFactory.createLineBorder(new Color(0xE7DECC), 2));
+      highlighted = false;
+  }
+
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);

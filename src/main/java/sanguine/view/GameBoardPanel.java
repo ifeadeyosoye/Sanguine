@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
+
+import sanguine.model.GameBoard;
 import sanguine.model.ModelReadOnlyInterface;
 import sanguine.model.SanguineGameBoard;
 
@@ -58,5 +60,16 @@ public class GameBoardPanel extends JPanel {
       }
       cells.add(currentRow);
     }
+  }
+
+  /**
+   * A method that displays the game board again for refreshing purposes.
+   */
+  public void displayBoard() {
+      for (List<CellPanel> row: cells) {
+          for (CellPanel cell : row) {
+              cell.removeHighlight();
+          }
+      }
   }
 }

@@ -40,4 +40,9 @@ public interface SanguineGuiView {
      * @param choice whether to make the view interactable
      */
   void changeInteraction(boolean choice);
+
+    /**
+     * A method that resets all of the highlighted components (cards and cells) in the GUI.
+     */
+  void removeHighlight();
 }
