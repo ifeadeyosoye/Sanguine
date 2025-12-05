@@ -116,11 +116,14 @@ public class SanguineViewFrame extends JFrame implements SanguineGuiView {
       setPanelEnabled(handPanel, choice);
   }
 
-  private void setPanelEnabled(JPanel panel, boolean enabled) {
-      panel.setEnabled(enabled);
 
-      for (Component comp : panel.getComponents()) {
-          comp.setEnabled(enabled);
+  private void setPanelEnabled(Component component, boolean enabled) {
+      component.setEnabled(enabled);
+
+      if (component instanceof Container container) {
+          for (Component comp : container.getComponents()) {
+              setPanelEnabled(comp, enabled);
+          }
       }
   }
 }

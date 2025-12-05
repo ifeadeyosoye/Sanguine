@@ -1,6 +1,6 @@
 package sanguine.view;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.util.List;
 import javax.swing.JPanel;
 import sanguine.model.ModelReadOnlyInterface;
@@ -51,6 +51,11 @@ public class CardHandPanel extends JPanel {
       displayRedHand();
     } else {
       displayBlueHand();
+    }
+
+    this.setEnabled(false);
+    for (Component comp : this.getComponents()) {
+        comp.setEnabled(this.isEnabled());
     }
   }
 

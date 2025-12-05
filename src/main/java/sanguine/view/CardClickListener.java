@@ -46,6 +46,10 @@ public class CardClickListener extends MouseAdapter {
 
   @Override
   public void mouseClicked(MouseEvent e) {
+    if (!this.panel.isEnabled()) {
+        return;
+    }
+
     for (Listener listener : listeners) {
       if (currentlyHighlighted != null && currentlyHighlighted != panel) {
         currentlyHighlighted.highlight(); // unhighlights if it is highlighted

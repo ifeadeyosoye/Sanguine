@@ -47,6 +47,10 @@ public class CellClickListener extends MouseAdapter {
 
   @Override
   public void mouseClicked(MouseEvent e) {
+
+    if (!this.panel.isEnabled()) {
+        return;
+    }
     for (Listener listener : listeners) {
       listener.clickCell(this.row, this.col);
       panel.highlight();

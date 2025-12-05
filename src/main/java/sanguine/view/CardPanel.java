@@ -55,6 +55,12 @@ public class CardPanel extends JPanel {
    * A method that highlights a card when it is clicked and unhighlights if it is already selected.
    */
   public void highlight() {
+
+    // to stop interaction when an error msg is given to the player.
+    if (!this.isEnabled()) {
+        return;
+    }
+
     if (highlighted) {
       // unhighlight the card
       setBorder(BorderFactory.createLineBorder(new Color(0xE7DECC), 2));

@@ -1,6 +1,7 @@
 package sanguine.model;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import sanguine.strategies.BasicStrategy;
 import sanguine.strategies.Coordinates;
@@ -45,6 +46,7 @@ public class AiPlayer implements UserPlayer {
     this.strat = strat;
     this.color = color;
     this.model = model;
+    listeners = new ArrayList<>();
   }
 
   @Override
