@@ -13,13 +13,22 @@ import sanguine.model.SanguineModel;
 import sanguine.model.SanguinePlayer;
 import sanguine.model.TieException;
 
+/**
+ * A mock of the Sanguine model that tracks inputs and methods called.
+ */
 public class MockModel implements SanguineModel {
 
   Appendable log;
 
+    /**
+     * A constructor that sets the Appendable object.
+     *
+     * @param log the Appendable object
+     */
   public MockModel(Appendable log) {
     this.log = log;
   }
+
   /**
    * adds listener to the models list of subscribers.
    *

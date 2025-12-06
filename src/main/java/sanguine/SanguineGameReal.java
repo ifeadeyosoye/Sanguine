@@ -14,6 +14,9 @@ import sanguine.strategies.MaximizeRowScore;
 import sanguine.view.SanguineGuiView;
 import sanguine.view.SanguineViewFrame;
 
+/**
+ * This is a main file that allows you to run the Game of Sanguine.
+ */
 public class SanguineGameReal {
   public static void main(String[] args) throws IOException {
     SanguineModel model = new BasicSanguineModel();
@@ -21,7 +24,8 @@ public class SanguineGameReal {
 
 
     model.startGame(3, 5, model.createDeck(), model.createDeck(), 7);
-    UserPlayer player1 = new AiPlayer(strat, PlayerColor.BLUE, model);
+    UserPlayer player1 = new HumanPlayer(PlayerColor.BLUE);
+    //UserPlayer player1 = new AiPlayer(strat, PlayerColor.BLUE, model);
     UserPlayer player2 = new HumanPlayer(PlayerColor.RED);
 
     SanguinePlayerController controller1 = new SanguinePlayerController(player1, model,

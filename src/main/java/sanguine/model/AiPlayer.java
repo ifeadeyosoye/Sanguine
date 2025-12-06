@@ -76,12 +76,6 @@ public class AiPlayer implements UserPlayer {
     }
   }
 
-  /**
-   * A public method that adds a subscriber to the AI player.
-   * The subscriber should be the controller.
-   *
-   * @param listener the listener that will subscribe to this class
-   */
   @Override
   public void subscribe(Listener listener) {
     if (listener == null) {

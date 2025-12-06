@@ -54,7 +54,9 @@ public class CellClickListener extends MouseAdapter {
 
     for (Listener listener : listeners) {
       listener.clickCell(this.row, this.col);
+      panel.getParent().repaint();
       panel.highlight();
+
     }
   }
 
