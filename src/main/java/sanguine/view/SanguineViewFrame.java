@@ -24,6 +24,7 @@ public class SanguineViewFrame extends JFrame implements SanguineGuiView {
   private List<Listener> listeners =  new ArrayList<>();
   private final Listener controller;
   private final PlayerColor color;
+  private boolean interactable;
 
   /**
    * construcor that takes in a model and controller and assigns them, assuming they are not null.
@@ -87,9 +88,16 @@ public class SanguineViewFrame extends JFrame implements SanguineGuiView {
   @Override
   public void refresh() {
     handPanel.displayHand();
-    //boardPanel.displayBoard();
+    boardPanel.displayBoard();
 
+    boardPanel.repaint();
     this.repaint();
+
+    if (model.getTurn().getColor() == color) {
+        changeInteraction(true);
+    } else {
+        changeInteraction(false);
+    }
   }
 
   @Override
@@ -113,6 +121,7 @@ public class SanguineViewFrame extends JFrame implements SanguineGuiView {
 
   @Override
   public void changeInteraction(boolean choice) {
+      interactable = choice;
       setPanelEnabled(boardPanel, choice);
       setPanelEnabled(handPanel, choice);
   }
@@ -133,5 +142,10 @@ public class SanguineViewFrame extends JFrame implements SanguineGuiView {
     handPanel.removeHighlight();
     // this will unhighlight all cells
     boardPanel.displayBoard();
+  }
+
+  @Override
+  public boolean interactable() {
+      return interactable;
   }
 }

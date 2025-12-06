@@ -45,4 +45,9 @@ public interface SanguineGuiView {
      * A method that resets all of the highlighted components (cards and cells) in the GUI.
      */
   void removeHighlight();
+
+  /**
+   * A method that returns whether the frame can be interacted with.
+   */
+  boolean interactable();
 }

@@ -125,7 +125,7 @@ public class FirstSpotTest {
 
 
     SanguineStubController controller = new SanguineStubController(model);
-    SanguineViewFrame frame = new SanguineViewFrame(model, controller);
+    SanguineViewFrame frame = new SanguineViewFrame(model, controller, PlayerColor.RED);
     frame.refresh();
     return model;
   }

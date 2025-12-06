@@ -43,6 +43,10 @@ public class AiPlayer implements UserPlayer {
       throw new IllegalArgumentException("Player color is null!");
     }
 
+    if (model == null) {
+        throw new IllegalArgumentException("Model is null!");
+    }
+
     this.strat = strat;
     this.color = color;
     this.model = model;
@@ -60,7 +64,7 @@ public class AiPlayer implements UserPlayer {
     if (coor.col() == -1 || coor.row() == -1 || coor.card() == null) {
       for (Listener listener : listeners) {
         // pass the AI player's turn
-        listener.pressM();
+        listener.pressP();
         return;
       }
     }
@@ -68,7 +72,7 @@ public class AiPlayer implements UserPlayer {
     for (Listener listener : listeners) {
       listener.clickCard(coor.card());
       listener.clickCell(coor.row(), coor.col());
-      listener.pressP();
+      listener.pressM();
     }
   }
 
@@ -85,4 +89,9 @@ public class AiPlayer implements UserPlayer {
     }
     listeners.add(listener);
   }
+
+    @Override
+    public List<Listener> seeSubscribers() {
+        return List.copyOf(listeners);
+    }
 }

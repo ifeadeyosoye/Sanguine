@@ -61,7 +61,7 @@ public class MaxOwnershipTest {
         firstCard.getStringInfluence());
 
     MaxOwnership max = new MaxOwnership();
-    Coordinates foundCoords = max(model, model.getTurn().getColor());
+    Coordinates foundCoords = max.choose(model, model.getTurn().getColor());
 
     model.playTurn(foundCoords.row(), foundCoords.col(), foundCoords.card());
     printTextView(model);
@@ -104,9 +104,10 @@ public class MaxOwnershipTest {
   public void noLegalMovesIsCorrect() throws IOException {
     SanguineModel model = makeModel();
 
-    Coordinates coords = MaximizeRowScore.maximizeScore(model, model.getTurn().getColor());
+    MaximizeRowScore max = new MaximizeRowScore();
+    Coordinates coords = max.choose(model, model.getTurn().getColor());
     while (!model.isGameOver()) {
-      coords = MaximizeRowScore.maximizeScore(model, model.getTurn().getColor());
+      coords = max.choose(model, model.getTurn().getColor());
       if (coords.card() == null) {
         model.passTurn();
         continue;

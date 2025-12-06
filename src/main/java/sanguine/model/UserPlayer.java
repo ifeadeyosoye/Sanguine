@@ -1,6 +1,8 @@
 package sanguine.model;
 
 import java.io.IOException;
+import java.util.List;
+
 import sanguine.strategies.Coordinates;
 import sanguine.view.Listener;
 
@@ -23,4 +25,11 @@ public interface UserPlayer {
    * @param listener a controller
    */
   void subscribe(Listener listener);
+
+    /**
+     * A method that returns a copy of all the subscribers for this class.
+     *
+     * @return a list of subscribers
+     */
+  List<Listener> seeSubscribers();
 }

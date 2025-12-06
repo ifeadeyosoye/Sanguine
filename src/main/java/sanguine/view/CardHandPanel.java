@@ -45,6 +45,8 @@ public class CardHandPanel extends JPanel {
    * A method used to display the hand or essentially refresh the panel to show the proper hand.
    */
   public void displayHand() {
+    this.removeAll();
+
     this.setLayout(new GridLayout());
 
     if (color == PlayerColor.RED) {
@@ -57,6 +59,9 @@ public class CardHandPanel extends JPanel {
     for (Component comp : this.getComponents()) {
         comp.setEnabled(this.isEnabled());
     }
+
+    this.revalidate();
+    this.repaint();
   }
 
   /**
@@ -64,13 +69,11 @@ public class CardHandPanel extends JPanel {
    */
   private void displayBlueHand() {
     List<SanguineCard> blueHand = model.getPlayerHand(PlayerColor.BLUE);
-    //panels.clear();
 
     for (SanguineCard card : blueHand) {
       CardPanel cardPanel = new CardPanel(card, PlayerColor.BLUE);
       cardPanel.addMouseListener(new CardClickListener(List.of(controller), card, cardPanel));
       this.add(cardPanel);
-      //panels.add(cardPanel);
     }
   }
 
@@ -79,13 +82,11 @@ public class CardHandPanel extends JPanel {
    */
   private void displayRedHand() {
     List<SanguineCard> redHand = model.getPlayerHand(PlayerColor.RED);
-    //panels.clear();
 
     for (SanguineCard card : redHand) {
       CardPanel cardPanel = new CardPanel(card, PlayerColor.RED);
       cardPanel.addMouseListener(new CardClickListener(List.of(controller), card, cardPanel));
       this.add(cardPanel);
-      //panels.add(cardPanel);
     }
   }
 

@@ -2,6 +2,9 @@ package sanguine.model;
 
 import sanguine.view.Listener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A representation of a human player that only has a player color.
  *
@@ -13,6 +16,7 @@ import sanguine.view.Listener;
  */
 public class HumanPlayer implements UserPlayer {
   private final PlayerColor color;
+  private List<Listener> listeners = new ArrayList<>();
 
   /**
    * A constructor for a Human player that only takes in the player color.
@@ -34,5 +38,10 @@ public class HumanPlayer implements UserPlayer {
   @Override
   public void subscribe(Listener listener) {
     //nothing needs to happen because the view listens to clicks from human players.
+  }
+
+  @Override
+  public List<Listener> seeSubscribers() {
+      return List.copyOf(listeners);
   }
 }

@@ -1,14 +1,10 @@
 package sanguine.strategies;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import sanguine.model.GameBoard;
-import sanguine.model.ModelReadOnlyInterface;
-import sanguine.model.Player;
-import sanguine.model.PlayerColor;
-import sanguine.model.SanguineCard;
-import sanguine.model.SanguineModel;
-import sanguine.model.SanguinePlayer;
+
+import sanguine.model.*;
 
 /**
  * this class holds a method that maximizes score per row. the method will be used by an AI bot
@@ -38,7 +34,9 @@ public class MaximizeRowScore implements BasicStrategy {
     GameBoard board = model.getBoard();
 
     for (int r = 0; r < board.getRows(); r++) {
-      Player oppositePlayer = getOppositePlayer(new SanguinePlayer(List.of(), color, 7));
+        List<SanguineCard> fakeDeck = DeckParser.makeDeck("docs"
+                + File.separator + "example.deck");
+      Player oppositePlayer = getOppositePlayer(new SanguinePlayer(fakeDeck, color, 7));
 
       int oppositeScore = model.getRowScore(oppositePlayer.getColor(), r);
       int score = model.getRowScore(player.getColor(), r);

@@ -71,14 +71,20 @@ public class SanguinePlayerController implements Listener, ModelListener {
         this.view = view;
         this.view.subscribe(this);
 
-        if (model.getTurn().getColor() == PlayerColor.RED) {
+        if (color == PlayerColor.RED) {
             myTurn = true;
-            view.changeInteraction(true);
+            view.changeInteraction(myTurn);
         } else {
             myTurn = false;
+            view.changeInteraction(myTurn);
+        }
+
+        if (!human) {
+            // because we shouldnt be able to do anything with the AI player
             view.changeInteraction(false);
         }
     }
+
     @Override
     public void clickCard(SanguineCard card) {
         if (!myTurn) {
@@ -109,16 +115,19 @@ public class SanguinePlayerController implements Listener, ModelListener {
 
         try {
             model.passTurn();
-            view.refresh();
         } catch (IllegalStateException exo) {
+            System.out.println(exo);
             view.showError("ERROR!! Game has not been started. Try booting again.");
         } catch (IOException e) {
           throw new RuntimeException(e);
         }
 
-        resetAfterEveryTurn();
         view.removeHighlight();
         view.refresh();
+        resetAfterEveryTurn();
+        if (!model.isGameOver()) {
+            view.showError("You passed your turn!");
+        }
     }
 
     @Override
@@ -130,28 +139,23 @@ public class SanguinePlayerController implements Listener, ModelListener {
 
         if (selectedCard == null || selectedRow == -1 || selectedCol == -1) {
             // AI already passes by submitting -1 -1 null
-            if (!human) {
-                return;
+            if (human) {
+                view.showError("You have not selected a card or cell!");
             }
-
-            view.showError("You have not selected a card/cell! " +
-                    "Make sure your desired choice is highlighted yellow!");
             return;
         }
 
         try {
             model.playTurn(selectedRow, selectedCol, selectedCard);
-        } catch (IllegalArgumentException exo) {
+            resetAfterEveryTurn();
+        } catch (IllegalArgumentException | IllegalStateException exo) {
             view.showError("Move is not possible! Select a new move!");
-        } catch (IllegalStateException exo) {
-            view.showError("ERROR!! Game has not been started. Try booting again.");
         } catch (IOException e) {
             throw new RuntimeException();
         }
 
-        view.removeHighlight(); // TODO not working for card but works for cell.
+        view.removeHighlight();
         view.refresh();
-        resetAfterEveryTurn();
     }
 
     @Override
@@ -159,12 +163,16 @@ public class SanguinePlayerController implements Listener, ModelListener {
         if (this.color == color) {
             player.notifyTurn();
             myTurn = true;
-            view.changeInteraction(true);
+            view.changeInteraction(myTurn);
+            if (!model.isGameOver()) {
+                view.showError("Your turn! Select a cell and card to play!");
+            }
         } else {
             myTurn = false;
-            view.changeInteraction(false);
+            view.changeInteraction(myTurn);
         }
 
+        view.removeHighlight();
         view.refresh();
     }
 
@@ -182,6 +190,8 @@ public class SanguinePlayerController implements Listener, ModelListener {
         } else {
             view.showError("Game over, Blue Player won! Blue's Score: " + winningScore);
         }
+
+        view.changeInteraction(false);
     }
 
     private void resetAfterEveryTurn() {

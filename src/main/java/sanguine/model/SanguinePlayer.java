@@ -67,7 +67,7 @@ public class SanguinePlayer implements Player {
   @Override
   public SanguineCard drawHandToBoard() throws IllegalArgumentException {
     if (!hand.isEmpty()) {
-      SanguineCard card = hand.removeFirst();
+      SanguineCard card = hand.remove(0);
       return new BasicSanguineCard(card.getName(), card.getCost(), card.getValue(),
           card.getStringInfluence());
     } else {
@@ -105,7 +105,7 @@ public class SanguinePlayer implements Player {
     }
 
     for (int count = 0; count < numCards; count++) {
-      SanguineCard card = deck.removeFirst();
+      SanguineCard card = deck.remove(0);
       hand.add(card);
     }
   }

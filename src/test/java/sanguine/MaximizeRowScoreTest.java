@@ -67,7 +67,8 @@ public class MaximizeRowScoreTest {
 
     //assertEquals(PlayerColor.BLUE, model.getTurn().getColor());
     model.passTurn();
-    Coordinates coords = MaximizeRowScore.maximizeScore(model, model.getTurn().getColor());
+    MaximizeRowScore max = new MaximizeRowScore();
+    Coordinates coords = max.choose(model, model.getTurn().getColor());
 
     assertEquals(PlayerColor.BLUE, model.getTurn().getColor());
     assertEquals(0, model.getRowScore(PlayerColor.BLUE, 0));
@@ -79,7 +80,7 @@ public class MaximizeRowScoreTest {
 
     //plays until the game is determined to be over. if this fails then this strategy doesnt work.
     while (!model.isGameOver()) {
-      coords = MaximizeRowScore.maximizeScore(model, model.getTurn().getColor());
+        Coordinates coords1 = max.choose(model, model.getTurn().getColor());
       if (coords.row() == -1) {
         model.passTurn();
         continue;
@@ -98,9 +99,10 @@ public class MaximizeRowScoreTest {
   public void noLegalMovesIsCorrect() throws IOException {
     SanguineModel model = makeModel();
 
-    Coordinates coords = MaximizeRowScore.maximizeScore(model, model.getTurn().getColor());
+      MaximizeRowScore max = new MaximizeRowScore();
+      Coordinates coords = max.choose(model, model.getTurn().getColor());
     while (!model.isGameOver()) {
-      coords = MaximizeRowScore.maximizeScore(model, model.getTurn().getColor());
+        Coordinates coords1 = max.choose(model, model.getTurn().getColor());
       if (coords.card() == null) {
         model.passTurn();
         continue;

@@ -1,5 +1,7 @@
 package sanguine.model;
 
+import sanguine.view.Listener;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -180,6 +182,12 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelCon
       throws IllegalStateException, IOException {
     hasGameStarted();
     changePlayer();
+
+    if (consecutivePasses >= 2) {
+        for (ModelListener listener : listeners) {
+            listener.notifyGameEnded();
+        }
+    }
   }
 
   /**
@@ -197,7 +205,6 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelCon
     for (ModelListener listener : listeners) {
       listener.turnChanged(currentPlayer.getColor());
     }
-
   }
 
   @Override
@@ -226,6 +233,7 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelCon
     }
 
     changePlayer();
+    currentPlayer.drawHandToBoard();
 
     consecutivePasses = 0;
   }
@@ -234,9 +242,6 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelCon
   public boolean isGameOver() throws IllegalStateException {
     hasGameStarted();
 
-    for (ModelListener listener : listeners) {
-      listener.notifyGameEnded();
-    }
     return consecutivePasses >= 2;
   }
 
@@ -383,8 +388,13 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelCon
     }
   }
 
+    @Override
+    public List<ModelListener> seeSubscribers() {
+        return List.copyOf(listeners);
+    }
 
-  // Private Helper Methods:
+
+    // Private Helper Methods:
 
   /**
    * Helper method that throws an exception when the game has not started.

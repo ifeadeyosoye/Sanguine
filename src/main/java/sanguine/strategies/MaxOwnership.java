@@ -2,18 +2,12 @@ package sanguine.strategies;
 
 import static sanguine.strategies.SimulatePlacement.pretendPlaceCard;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import sanguine.model.BasicSanguineBoardCell;
-import sanguine.model.BasicSanguineModel;
-import sanguine.model.ModelReadOnlyInterface;
-import sanguine.model.Player;
-import sanguine.model.PlayerColor;
-import sanguine.model.SanguineCard;
-import sanguine.model.SanguineGameBoard;
-import sanguine.model.SanguineModel;
-import sanguine.model.SanguinePlayer;
+
+import sanguine.model.*;
 
 /**
  * this class holds methods that use a strategy that maximizes the amount of squares that a player
@@ -78,7 +72,9 @@ public class MaxOwnership implements BasicStrategy {
       throws IOException {
 
     SanguineGameBoard board = model.getBoard().getBoard();
-    SanguinePlayer tempPlayer = new SanguinePlayer(List.of(), color, 7);
+      List<SanguineCard> fakeDeck = DeckParser.makeDeck("docs"
+              + File.separator + "example.deck");
+      SanguinePlayer tempPlayer = new SanguinePlayer(fakeDeck, color, 7);
     if (!model.placeCardLegal(row, col, card, tempPlayer)) {
       return -1;
     }

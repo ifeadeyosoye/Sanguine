@@ -1,6 +1,8 @@
 package sanguine.model;
 
 
+import sanguine.view.Listener;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -131,6 +133,13 @@ public interface ModelReadOnlyInterface {
   public boolean placeCardLegal(int row, int col, SanguineCard card,
                                 SanguinePlayer player)
       throws IllegalStateException, IllegalArgumentException;
+
+  /**
+   * A method that returns a list of subscribers.
+   *
+   * @return the subscribers of the class
+   */
+  public List<ModelListener> seeSubscribers();
 }
 
 

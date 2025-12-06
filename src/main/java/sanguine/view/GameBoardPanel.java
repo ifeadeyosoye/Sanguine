@@ -68,6 +68,7 @@ public class GameBoardPanel extends JPanel {
   public void displayBoard() {
       for (List<CellPanel> row: cells) {
           for (CellPanel cell : row) {
+              cell.repaint();
               cell.removeHighlight();
           }
       }
