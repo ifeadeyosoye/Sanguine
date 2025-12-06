@@ -254,6 +254,7 @@ public class MockModel implements SanguineModel {
       throws IllegalArgumentException, IllegalStateException, IOException {
     SanguineModel model = new BasicSanguineModel();
     log.append("" + row).append("" + col).append("" + card);
+
   }
 
   /**

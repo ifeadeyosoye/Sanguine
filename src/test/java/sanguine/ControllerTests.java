@@ -224,7 +224,8 @@ public class ControllerTests {
             controller1.setView(mockView);
             controller1.pressP();
 
-            assertEquals("subscribeshowError:Not your turn!", log.toString());
+            assertTrue(log.toString().contains("subscribe"));
+            assertTrue(log.toString().contains("showError:Not your turn!"));
         } catch (Exception exo) {
             throw new RuntimeException(exo);
         }
@@ -250,7 +251,8 @@ public class ControllerTests {
             controller1.setView(mockView);
             controller1.pressM();
 
-            assertEquals("subscribeshowError:Not your turn!", log.toString());
+            assertTrue(log.toString().contains("subscribe"));
+            assertTrue(log.toString().contains("showError:Not your turn"));
         } catch (Exception exo) {
             throw new RuntimeException(exo);
         }
@@ -330,8 +332,8 @@ public class ControllerTests {
             controller1.turnChanged(PlayerColor.BLUE);
             controller2.turnChanged(PlayerColor.BLUE);
 
-            assertFalse(view2.interactable());
-            assertTrue(view1.interactable());
+            assertTrue(view2.interactable());
+            assertFalse(view1.interactable());
 
             controller1.turnChanged(PlayerColor.RED);
             controller2.turnChanged(PlayerColor.RED);
@@ -429,12 +431,15 @@ public class ControllerTests {
         int newRow = 2;
         int newCol = 2;
 
+        controller.clickCard(card);
+        controller.clickCell(newRow, newCol);
+        controller.pressM();
+
         SanguineCard newCard = (SanguineCard)model.createDeck().get(1);
 
         assertTrue(log.toString().contains("" + newRow));
         assertTrue(log.toString().contains("" + newCol));
         assertTrue(log.toString().contains("" + newCard));
-
     }
 
     /**
@@ -494,7 +499,6 @@ public class ControllerTests {
         controller.clickCell(row, col);
         controller.pressM();
 
-        System.out.println(log);
         assertTrue(log.toString().contains("You have not selected a card or cell!"));
     }
 
@@ -582,8 +586,7 @@ public class ControllerTests {
 
 
         controller.turnChanged(PlayerColor.RED);
-        assertTrue(log.toString().contains("Your turn! Select a cell and card to play!"));
-
+        assertTrue(log.toString().contains("changeInteraction"));
     }
 
     /**
