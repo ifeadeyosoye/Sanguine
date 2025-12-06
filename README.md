@@ -161,8 +161,16 @@ Also added method removeHighlight() which will essentially reset the highlighted
 
 **Changes to Model:**
 Made the model a publisher and the controllers subscribe to it. The model implements ModelControllerPublisher. Interface is described in a later section. Model alerts every subscriber (two controllers) with the color of the current player. This method is called in changeturn().
-Controller:
+
+**Controller:**
+
+**SanguinePlayerController**
 Implements the ModelListener class. Implementation of the turnChanged() method calls the notifyTurn on the player in the controller.
+Implements Listener and for each method, communicates between the model and view to play the game.
+Implements PlayerControllerInterface which only holds one method to set the view. This is because there is a loop for instantiation with MVC so we took setting the view out of the constructor and put it in a seperate method.
+
+**PlayerControllerInterface:**
+
 
 **UserPlayer:**
 This interface is a representation of an actual player in a game of Sanguine. It is not the version the model uses, but a version the controller uses. The only methods in this are notifyTurn() and subscribe(). The lack of methods in this is intentional because an actual player in Sanguine can only see if it's their turn in order to make a move. And then we added subscribe because UserPlayer will always be a publisher for its own controller.
@@ -171,4 +179,4 @@ This interface is a representation of an actual player in a game of Sanguine. It
 This is an implementation of UserPlayer for an AI or machine player. At its instantiation it sets a strategy, player color, and read only model. Additionally, the AiPlayer has a list of listeners. The listener we anticipate is just the controller. We decided to set a strategy at instantiation that can not change because we do not want an AI player’s strategy to change during a game. This is because we envision having different difficulties that an AI player can be set to when a human wants to play against AI. So we would consider the FirstSpot strategy to be easiest whereas the MiniMax strategy would be the most difficult because it considers all three strategies we created. So if a human wants to change the AI player they play against, they can start a new game and instantiate the AI player with a new strategy. Then for notifyTurn(), we have the AI player consider its strategy. If its strategy says to pass, the AI player calls pressP() on the controller. If the strategy says to play, the AI player calls pressM() and then calls clickCard(), clickCell() etc. to make sure the controller knows what the move is.
 
 **HumanPlayer:**
-This is an implementation of UserPlayer for a human player. At its instantiation it sets only a player color. This is because the human player can see the view so it does not need a read-only model. Additionally, the HumanPlayer has a list of listeners. The listener we anticipate is just the controller. Nothing needs to happen in notifyTurn() because the player will get a pop up saying it is their turn on the view. Additionally, subscribe() does not actually subscribe the controller to the view because the controller will be listening to the view for human player input. 
+This is an implementation of UserPlayer for a human player. At its instantiation it sets only a player color. This is because the human player can see the view so it does not need a read-only model. Additionally, the HumanPlayer has a list of listeners. The listener we anticipate is just the controller. Nothing needs to happen in notifyTurn() because the player will get a pop up saying it is their turn on the view. Additionally, subscribe() does not actually subscribe the controller to the view because the controller will be listening to the view for human player input.

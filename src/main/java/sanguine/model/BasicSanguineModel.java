@@ -214,6 +214,7 @@ public class BasicSanguineModel implements SanguineModel<SanguineCard>, ModelCon
     }
     this.listeners.add(listener);
   }
+
   private void notify(PlayerColor color) {
 
   }

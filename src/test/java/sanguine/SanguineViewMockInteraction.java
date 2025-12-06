@@ -5,6 +5,9 @@ import sanguine.view.SanguineGuiView;
 
 import javax.swing.*;
 
+/**
+ * A mock of the Sanguine view that deals with making sure the view is interactable at certain points.
+ */
 public class SanguineViewMockInteraction extends JFrame implements SanguineGuiView {
     private boolean interactable;
 

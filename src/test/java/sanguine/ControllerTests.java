@@ -343,6 +343,11 @@ public class ControllerTests {
         }
     }
 
+    /**
+     * This makes sure that cards are properly being selected.
+     *
+     * @throws IOException when the deck file is not read properly
+     */
     @Test
     public void testCardSelection() throws IOException {
 
@@ -361,9 +366,9 @@ public class ControllerTests {
     }
 
     /**
-     * makes sure that when you click a card the model recieves it correctly.
+     * Makes sure that when you click a card the model receives it correctly.
      *
-     * @throws IOException if deck is unreadble
+     * @throws IOException if deck is unreadable
      */
     @Test
     public void testCardSelectionClickOnce() throws IOException {
@@ -395,10 +400,9 @@ public class ControllerTests {
     }
 
     /**
-     * makes sure that when a card is clicked, and then another one is clicked, the new one is
-     * clicked.
+     * Makes sure that when a card is clicked, and then another one is clicked, the new one is clicked.
      *
-     * @throws IOException if deck is unreadble.
+     * @throws IOException if deck is unreadable.
      */
     @Test
     public void testCardSelectionClickTwice() throws IOException {
@@ -433,6 +437,11 @@ public class ControllerTests {
 
     }
 
+    /**
+     * This makes sure that refresh and remove highlight are done properly after the model makes a move.
+     *
+     * @throws IOException when the deck file is not read properly
+     */
     @Test
     public void validPlayTurn() throws IOException {
         Appendable log = new StringBuilder();
@@ -460,7 +469,7 @@ public class ControllerTests {
     }
 
     /**
-     * makes sure pressM does not allow you to play without having clicked a card
+     * Makes sure pressM does not allow you to play without having clicked a card.
      *
      * @throws IOException if deck file is unreadable.
      */
@@ -490,7 +499,7 @@ public class ControllerTests {
     }
 
     /**
-     * makes sure pressM does not allow you to play without having clicked a cell
+     * Makes sure pressM does not allow you to play without having clicked a cell.
      *
      * @throws IOException if deck file is unreadable.
      */
@@ -520,7 +529,7 @@ public class ControllerTests {
 
 
     /**
-     * makes sure that controller resets the selected card, col, and row.
+     * Makes sure that controller resets the selected card, col, and row.
      *
      * @throws IOException if the deck file is unreachable
      */
@@ -553,8 +562,9 @@ public class ControllerTests {
 
 
     /**
-     * makes sure that turnChanged is called correctly
-     * @throws IOException
+     * Makes sure that turnChanged is called correctly.
+     *
+     * @throws IOException when the deck file is not read properly
      */
     @Test
     public void turnEndsAlert() throws IOException {
@@ -577,7 +587,9 @@ public class ControllerTests {
     }
 
     /**
-     * tests if the controller passes twice and then the model ends the games.
+     * Tests if the controller passes twice and then the model ends the games.
+     *
+     * @throws IOException when the deck file is not read properly
      */
     @Test
     public void gameEndsAlert() throws IOException {
@@ -609,5 +621,4 @@ public class ControllerTests {
         redController.pressP();
         assertTrue(log.toString().contains("Game over"));
     }
-
 }

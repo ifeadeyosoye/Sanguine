@@ -1,17 +1,27 @@
 package sanguine.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import sanguine.model.*;
 import sanguine.view.Listener;
 import sanguine.view.SanguineGuiView;
 
 /**
- * ....
+ * This is a controller that is dedicated to a specific Sanguine player.
+ *
+ * <p>It constructs with a model, UserPlayer and player color, but sets the view using a public method.</p>
+ * This controller works with AI and human players.
+ *
+ * <p>This controller subscribes to the user player so that it knows what actions to communicate to the model.</p>
+ * Therefore it responds to events at any time from human and AI players.
+ * It is also a listener for the model to see when a player's turn changes.
+ *
+ * <p>When it is NOT the players turn who is connected to this controller, the view is DISABLED.</p>
+ * This is so that the opposing player can not interact with the opponents view.
+ * In order to be clear though, we create a pop-up on the view when it is a player's turn again.
  */
-public class SanguinePlayerController implements Listener, ModelListener {
-
+public class SanguinePlayerController implements Listener, ModelListener, PlayerControllerInterface {
+    // Private Fields:
     private SanguineGuiView view;
     private final SanguineModel model;
     private final UserPlayer player;
@@ -21,7 +31,6 @@ public class SanguinePlayerController implements Listener, ModelListener {
     private int selectedCol = -1;
     private boolean myTurn;
     private final boolean human;
-
 
     /**
      * A constructor that creates a controller for a specific player using the model, view, player and their color.
@@ -58,12 +67,7 @@ public class SanguinePlayerController implements Listener, ModelListener {
         }
     }
 
-    /**
-     * this is used because the controller needs the view and the view needs the controller. so we
-     * opted to have the controller initialize the view in this method, not the constructor.
-     *
-     * @param view view
-     */
+    @Override
     public void setView(SanguineGuiView view) {
         if (view == null) {
             throw new IllegalArgumentException("view cannot be null");
@@ -74,6 +78,7 @@ public class SanguinePlayerController implements Listener, ModelListener {
         if (color == PlayerColor.RED) {
             myTurn = true;
             view.changeInteraction(myTurn);
+            view.showError("Red player's turn to start the game!");
         } else {
             myTurn = false;
             view.changeInteraction(myTurn);
@@ -145,21 +150,20 @@ public class SanguinePlayerController implements Listener, ModelListener {
         try {
             model.playTurn(selectedRow, selectedCol, selectedCard);
             resetAfterEveryTurn();
+            view.removeHighlight();
+            view.refresh();
         } catch (IllegalArgumentException | IllegalStateException exo) {
             view.showError("Move is not possible! Select a new move!");
         } catch (IOException e) {
             throw new RuntimeException();
         }
-
-        view.removeHighlight();
-        view.refresh();
     }
 
     @Override
     public void turnChanged(PlayerColor color) throws IOException {
         if (this.color == color) {
-            player.notifyTurn();
             myTurn = true;
+            player.notifyTurn();
             view.changeInteraction(myTurn);
             if (!model.isGameOver()) {
                 view.showError("Your turn! Select a cell and card to play!");
@@ -179,13 +183,18 @@ public class SanguinePlayerController implements Listener, ModelListener {
             return;
         }
 
-        Player winningplayer = model.getWinner();
-        int winningScore = model.getScore(winningplayer.getColor());
+        try {
+            Player winningplayer = model.getWinner();
+            int winningScore = model.getScore(winningplayer.getColor());
 
-        if (winningplayer.getColor() == PlayerColor.RED) {
-            view.showError("Game over, Red Player won! Red's Score: " + winningScore);
-        } else {
-            view.showError("Game over, Blue Player won! Blue's Score: " + winningScore);
+            if (winningplayer.getColor() == PlayerColor.RED) {
+                view.showError("Game over, Red Player won! Red's Score: " + winningScore);
+            } else {
+                view.showError("Game over, Blue Player won! Blue's Score: " + winningScore);
+            }
+        } catch (TieException exo) {
+            int winningScore = model.getScore(PlayerColor.RED);
+            view.showError("Game over, Game is tied! Your Scores: " + winningScore);
         }
 
         view.changeInteraction(false);

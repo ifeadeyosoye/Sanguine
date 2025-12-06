@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.io.IOException;
 
 /**
- * A mock of the view for tracking input.
+ * A mock of the Sanguine view for tracking input.
  */
 public class SanguineMockTrackInputView extends JFrame implements SanguineGuiView {
     private Appendable log;

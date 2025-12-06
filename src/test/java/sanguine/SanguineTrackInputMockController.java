@@ -7,6 +7,9 @@ import sanguine.view.Listener;
 
 import java.io.IOException;
 
+/**
+ * A mock of the Sanguine controller that tracks input and methods called.
+ */
 public class SanguineTrackInputMockController implements Listener, ModelListener {
     private final Appendable log;
 
