@@ -17,7 +17,7 @@ import sanguine.model.SanguineModel;
  * if the coordinates are (-1,-1,null) then that means the player should pass. this will be handled
  * by the method that calls this one.
  */
-public class MiniMax {
+public class MiniMax implements BasicStrategy {
 
 
   /**
@@ -30,7 +30,8 @@ public class MiniMax {
    *
    * @throws IOException if deck file cannot be read
    */
-  public static Coordinates minimizeOps(ModelReadOnlyInterface model) throws IOException {
+  @Override
+  public Coordinates choose(ModelReadOnlyInterface model, PlayerColor color) throws IOException {
 
     PlayerColor opponent = model.getTurn().getColor() == PlayerColor.RED ? PlayerColor.BLUE
         : PlayerColor.RED;

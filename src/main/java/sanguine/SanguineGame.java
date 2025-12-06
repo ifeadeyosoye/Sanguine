@@ -1,86 +1,104 @@
 package sanguine;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import sanguine.controller.SanguineStubController;
-import sanguine.controller.StubController;
-import sanguine.model.*;
-import sanguine.view.BasicSanguineTextualView;
-import sanguine.view.Listener;
+import sanguine.controller.SanguinePlayerController;
+import sanguine.model.AiPlayer;
+import sanguine.model.BasicSanguineModel;
+import sanguine.model.DeckParser;
+import sanguine.model.HumanPlayer;
+import sanguine.model.PlayerColor;
+import sanguine.model.SanguineCard;
+import sanguine.model.SanguineModel;
+import sanguine.model.UserPlayer;
+import sanguine.strategies.FirstSpot;
+import sanguine.strategies.MaxOwnership;
+import sanguine.strategies.MaximizeRowScore;
+import sanguine.strategies.MiniMax;
+import sanguine.view.SanguineGuiView;
 import sanguine.view.SanguineViewFrame;
 
-/**
- * This contains the main method to our program. this is the doorway.
- */
 public class SanguineGame {
-
-  /**
-   * This is the method that will start our program.
-   *
-   * @param args are the input from the terminal. we will require this to be in the following
-   *             format.
-   */
   public static void main(String[] args) throws IOException {
 
-    BasicSanguineModel model = new BasicSanguineModel();
-    List<SanguineCard> deck;
-
-    if (args.length == 0) {
-      System.out.println("using default deck");
-      deck = DeckParser.makeDeck("docs" + File.separator + "example.deck");
-    } else {
-
-      File file = new File(args[0]);
-      if (file.exists()) {
-        try {
-          DeckParser.checkValidDeck(DeckParser.makeDeck(args[0]));
-          deck = DeckParser.makeDeck(args[0]);
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        } catch (IllegalStateException e) {
-          System.out.println("deck path invalid. using default deck");
-          deck = DeckParser.makeDeck("docs" + File.separator + "example.deck");
-        }
-      } else {
-        deck = DeckParser.makeDeck("docs" + File.separator + "example.deck");
-      }
+    if (args.length < 6) {
+      System.exit(1);
     }
-    model.startGame(3, 5, deck, deck, 5);
 
-    Listener controller = new SanguineStubController(model);
-    SanguineViewFrame view = new SanguineViewFrame(model, controller, PlayerColor.RED);
+    int rows = Integer.parseInt(args[0]);
+    int cols = Integer.parseInt(args[1]);
+    String redDeckPath = args[2];
+    String blueDeckPath = args[3];
+    String redPlayerType = args[4];
+    String bluePlayerType = args[5];
 
-    while (!model.isGameOver()) {
-      
-      System.out.println(view.toString());
 
-      canPlayTurn(model);
+    SanguineModel model = new BasicSanguineModel();
+    List<SanguineCard> redDeck;
+    List<SanguineCard> blueDeck;
+
+    setDecks(redDeckPath, model, blueDeckPath);
+
+
+    model.startGame(3, 5, model.createDeck(), model.createDeck(), 7);
+    UserPlayer redPlayer = makeUserPlayer(model, PlayerColor.RED, redPlayerType);
+    UserPlayer bluePlayer = makeUserPlayer(model, PlayerColor.BLUE, bluePlayerType);
+
+    SanguinePlayerController redController = new SanguinePlayerController(redPlayer, model,
+        PlayerColor.BLUE);
+    SanguinePlayerController blueController = new SanguinePlayerController(bluePlayer, model,
+        PlayerColor.RED);
+
+    SanguineGuiView viewPlayer1 = new SanguineViewFrame(model, redController, PlayerColor.BLUE);
+    SanguineGuiView viewPlayer2 = new SanguineViewFrame(model, blueController, PlayerColor.RED);
+
+    redController.setView(viewPlayer1);
+    blueController.setView(viewPlayer2);
+  }
+
+  /**
+   * sets deck to the given parameters or makes the default ones from the model.
+   *
+   * @param redDeckPath path for red deck
+   * @param model model
+   * @param blueDeckPath path for the bluedeck
+   *
+   * @throws IOException if the deck file (from the model) is unreadable
+   */
+  private static void setDecks(String redDeckPath, SanguineModel model, String blueDeckPath)
+      throws IOException {
+    List<SanguineCard> blueDeck;
+    List<SanguineCard> redDeck;
+    try {
+      redDeck = DeckParser.makeDeck(redDeckPath);
+    } catch (IllegalArgumentException | IOException e) {
+      redDeck = model.createDeck();
+    }
+    try {
+      blueDeck = DeckParser.makeDeck(blueDeckPath);
+    } catch (IllegalArgumentException | IOException e) {
+      blueDeck = model.createDeck();
     }
   }
 
   /**
-   * This loops through the board and finds the first valid place a player can go.
-   * When it finds that place, it
+   * returns a new player type based off the arguments.
+   *
+   * @param model model
+   * @param color color of player
+   * @param type type of player
+   *
+   * @return a new user player
    */
-  private static void canPlayTurn(BasicSanguineModel model) throws IOException {
-    SanguinePlayer player = model.getTurn();
-
-    for (int r = 0; r < 3; r++) {
-      for (int c = 0; c < 5; c++) {
-        try {
-          model.playTurn(r, c, player.drawHandToBoard());
-
-          try {
-            player.deckToHand(1);
-          } catch (IllegalArgumentException | IllegalStateException e) {
-            return;
-          }
-        } catch (IllegalStateException | IllegalArgumentException e) {
-          continue;
-        }
-      }
-    }
-    model.passTurn();
+  private static UserPlayer makeUserPlayer(SanguineModel model, PlayerColor color, String type) {
+    String lowerType = type.toLowerCase();
+    return switch (lowerType) {
+      case "human" -> new HumanPlayer(color);
+      case "strategy1" -> new AiPlayer(new FirstSpot(), color, model);
+      case "strategy2" -> new AiPlayer(new MaxOwnership(), color, model);
+      case "strategy3" -> new AiPlayer(new MaximizeRowScore(), color, model);
+      case "strategy4" -> new AiPlayer(new MiniMax(), color, model);
+      default -> throw new IllegalArgumentException("invalid player type: " + type);
+    };
   }
 }

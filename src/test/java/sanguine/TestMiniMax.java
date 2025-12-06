@@ -23,7 +23,8 @@ public class TestMiniMax {
   public void testValidReturn() throws IOException {
     SanguineModel model = makeModel();
 
-    Coordinates coords = MiniMax.minimizeOps(model);
+    MiniMax miniMax = new MiniMax();
+    Coordinates coords = miniMax.choose(model, model.getTurn().getColor());
 
     System.out.println(coords);
   }
