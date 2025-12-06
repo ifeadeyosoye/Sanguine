@@ -63,12 +63,20 @@ public class SanguineMockTrackInputView extends JFrame implements SanguineGuiVie
 
     @Override
     public void changeInteraction(boolean choice) {
-
+      try {
+        log.append("changeInteraction");
+      } catch (IOException e) {
+          // if we are here, the test will fail anyway so let it fail.
+      }
     }
 
     @Override
     public void removeHighlight() {
-
+      try {
+        log.append("removeHighlight");
+      } catch (IOException e) {
+          // if we are here, the test will fail anyway so let it fail.
+      }
     }
 
     @Override

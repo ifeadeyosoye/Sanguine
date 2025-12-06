@@ -91,7 +91,6 @@ public class SanguinePlayerController implements Listener, ModelListener {
             view.showError("Not your turn!");
             return;
         }
-
         selectedCard = card;
     }
 
@@ -101,7 +100,6 @@ public class SanguinePlayerController implements Listener, ModelListener {
             view.showError("Not your turn!");
             return;
         }
-
         selectedRow = row;
         selectedCol = col;
     }
@@ -112,7 +110,6 @@ public class SanguinePlayerController implements Listener, ModelListener {
             view.showError("Not your turn!");
             return;
         }
-
         try {
             model.passTurn();
         } catch (IllegalStateException exo) {

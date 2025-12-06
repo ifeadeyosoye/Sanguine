@@ -8,7 +8,7 @@ import sanguine.view.Listener;
 import java.io.IOException;
 
 public class SanguineTrackInputMockController implements Listener, ModelListener {
-    private Appendable log;
+    private final Appendable log;
 
     /**
      * Constructor for this mock class that takes in an Appendable object.
@@ -36,7 +36,7 @@ public class SanguineTrackInputMockController implements Listener, ModelListener
     @Override
     public void clickCard(SanguineCard card) {
         try {
-            log.append("clickCard");
+            log.append("clickCard " + card);
         } catch (IOException exo) {
             // if we are here, the test will fail anyway so let it fail.
         }

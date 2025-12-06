@@ -9,7 +9,6 @@ import sanguine.view.SanguineGuiView;
 import sanguine.view.SanguineViewFrame;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -343,4 +342,272 @@ public class ControllerTests {
             throw new RuntimeException(exo);
         }
     }
+
+    @Test
+    public void testCardSelection() throws IOException {
+
+        Appendable controllerLog = new StringBuilder();
+
+        SanguineTrackInputMockController mockController = new SanguineTrackInputMockController(
+            controllerLog);
+
+        SanguineModel model = new BasicSanguineModel();
+        model.createDeck().get(0);
+
+        SanguineCard card = (SanguineCard)model.createDeck().get(0);
+
+        mockController.clickCard(card);
+        assertEquals("clickCard " + card, controllerLog.toString());
+    }
+
+    /**
+     * makes sure that when you click a card the model recieves it correctly.
+     *
+     * @throws IOException if deck is unreadble
+     */
+    @Test
+    public void testCardSelectionClickOnce() throws IOException {
+
+        Appendable log = new StringBuilder();
+        MockModel mockModel = new MockModel(log);
+
+        UserPlayer player = new HumanPlayer(PlayerColor.RED);
+
+        SanguinePlayerController controller = new SanguinePlayerController(player, mockModel,
+            PlayerColor.RED);
+
+        SanguineMockTrackInputView view = new SanguineMockTrackInputView(log);
+        controller.setView(view);
+        int row = 1;
+        int col = 1;
+        SanguineModel model = new BasicSanguineModel();
+        model.createDeck().get(0);
+        SanguineCard card = (SanguineCard)model.createDeck().get(0);
+
+        controller.clickCard(card);
+        controller.clickCell(row, col);
+        controller.pressM();
+
+        assertTrue(log.toString().contains("" + row));
+        assertTrue(log.toString().contains("" + col));
+        assertTrue(log.toString().contains("" + card));
+
+    }
+
+    /**
+     * makes sure that when a card is clicked, and then another one is clicked, the new one is
+     * clicked.
+     *
+     * @throws IOException if deck is unreadble.
+     */
+    @Test
+    public void testCardSelectionClickTwice() throws IOException {
+
+        Appendable log = new StringBuilder();
+        MockModel mockModel = new MockModel(log);
+
+        UserPlayer player = new HumanPlayer(PlayerColor.RED);
+
+        SanguinePlayerController controller = new SanguinePlayerController(player, mockModel,
+            PlayerColor.RED);
+
+        SanguineMockTrackInputView view = new SanguineMockTrackInputView(log);
+        controller.setView(view);
+        int row = 1;
+        int col = 1;
+        SanguineModel model = new BasicSanguineModel();
+        SanguineCard card = (SanguineCard)model.createDeck().get(0);
+
+        controller.clickCard(card);
+        controller.clickCell(row, col);
+        controller.pressM();
+
+        int newRow = 2;
+        int newCol = 2;
+
+        SanguineCard newCard = (SanguineCard)model.createDeck().get(1);
+
+        assertTrue(log.toString().contains("" + newRow));
+        assertTrue(log.toString().contains("" + newCol));
+        assertTrue(log.toString().contains("" + newCard));
+
+    }
+
+    @Test
+    public void validPlayTurn() throws IOException {
+        Appendable log = new StringBuilder();
+        MockModel mockModel = new MockModel(log);
+        SanguineModel model = new BasicSanguineModel();
+
+        UserPlayer player = new HumanPlayer(PlayerColor.RED);
+
+        SanguinePlayerController controller = new SanguinePlayerController(player, mockModel,
+            PlayerColor.RED);
+
+        SanguineMockTrackInputView view = new SanguineMockTrackInputView(log);
+        controller.setView(view);
+
+        SanguineCard card = (SanguineCard) model.createDeck().get(0);
+        int row = 1;
+        int col = 1;
+
+        controller.clickCard(card);
+        controller.clickCell(row, col);
+        controller.pressM();
+
+        assertTrue(log.toString().contains("refresh"));
+        assertTrue(log.toString().contains("removeHighlight"));
+    }
+
+    /**
+     * makes sure pressM does not allow you to play without having clicked a card
+     *
+     * @throws IOException if deck file is unreadable.
+     */
+    @Test
+    public void testMAlertsWhenNoCard() throws IOException {
+        Appendable log = new StringBuilder();
+        MockModel mockModel = new MockModel(log);
+        SanguineModel model = new BasicSanguineModel();
+
+        UserPlayer player = new HumanPlayer(PlayerColor.RED);
+
+        SanguinePlayerController controller = new SanguinePlayerController(player, mockModel,
+            PlayerColor.RED);
+
+        SanguineMockTrackInputView view = new SanguineMockTrackInputView(log);
+        controller.setView(view);
+
+        SanguineCard card = (SanguineCard) model.createDeck().get(0);
+        int row = 1;
+        int col = 1;
+
+        controller.clickCell(row, col);
+        controller.pressM();
+
+        System.out.println(log);
+        assertTrue(log.toString().contains("You have not selected a card or cell!"));
+    }
+
+    /**
+     * makes sure pressM does not allow you to play without having clicked a cell
+     *
+     * @throws IOException if deck file is unreadable.
+     */
+    @Test
+    public void testMAlertsWhenNoCell() throws IOException {
+        Appendable log = new StringBuilder();
+        MockModel mockModel = new MockModel(log);
+        SanguineModel model = new BasicSanguineModel();
+
+        UserPlayer player = new HumanPlayer(PlayerColor.RED);
+
+        SanguinePlayerController controller = new SanguinePlayerController(player, mockModel,
+            PlayerColor.RED);
+
+        SanguineMockTrackInputView view = new SanguineMockTrackInputView(log);
+        controller.setView(view);
+
+        SanguineCard card = (SanguineCard) model.createDeck().get(0);
+        int row = 1;
+        int col = 1;
+
+        controller.clickCard(card);
+        controller.pressM();
+
+        assertTrue(log.toString().contains("You have not selected a card or cell!"));
+    }
+
+
+    /**
+     * makes sure that controller resets the selected card, col, and row.
+     *
+     * @throws IOException if the deck file is unreachable
+     */
+    @Test
+    public void testMoveResetsAfterPressM() throws IOException {
+        Appendable log = new StringBuilder();
+        MockModel mockModel = new MockModel(log);
+        SanguineModel model = new BasicSanguineModel();
+
+        UserPlayer player = new HumanPlayer(PlayerColor.RED);
+
+        SanguinePlayerController controller = new SanguinePlayerController(player, mockModel,
+            PlayerColor.RED);
+
+        SanguineMockTrackInputView view = new SanguineMockTrackInputView(log);
+        controller.setView(view);
+
+        SanguineCard card = (SanguineCard) model.createDeck().get(0);
+        int row = 1;
+        int col = 1;
+
+        controller.clickCard(card);
+        controller.clickCell(row, col);
+        controller.pressM();
+
+        controller.pressM();
+
+        assertTrue(log.toString().contains("You have not selected a card or cell!"));
+    }
+
+
+    /**
+     * makes sure that turnChanged is called correctly
+     * @throws IOException
+     */
+    @Test
+    public void turnEndsAlert() throws IOException {
+        Appendable log = new StringBuilder();
+        MockModel mockModel = new MockModel(log);
+        SanguineModel model = new BasicSanguineModel();
+
+        UserPlayer player = new HumanPlayer(PlayerColor.RED);
+
+        SanguinePlayerController controller = new SanguinePlayerController(player, mockModel,
+            PlayerColor.RED);
+
+        SanguineMockTrackInputView view = new SanguineMockTrackInputView(log);
+        controller.setView(view);
+
+
+        controller.turnChanged(PlayerColor.RED);
+        assertTrue(log.toString().contains("Your turn! Select a cell and card to play!"));
+
+    }
+
+    /**
+     * tests if the controller passes twice and then the model ends the games.
+     */
+    @Test
+    public void gameEndsAlert() throws IOException {
+        Appendable log = new StringBuilder();
+        SanguineModel model = new BasicSanguineModel();
+        model.startGame(3, 5, model.createDeck(), model.createDeck(), 7);
+        UserPlayer redPlayer = new HumanPlayer(PlayerColor.RED);
+        UserPlayer bluePlayer = new HumanPlayer(PlayerColor.BLUE);
+
+        SanguinePlayerController redController = new SanguinePlayerController(redPlayer, model,
+            PlayerColor.RED);
+        SanguinePlayerController blueController = new SanguinePlayerController(bluePlayer, model,
+            PlayerColor.BLUE);
+
+        SanguineMockTrackInputView redView = new SanguineMockTrackInputView(log);
+        redController.setView(redView);
+
+        SanguineMockTrackInputView blueView = new SanguineMockTrackInputView(log);
+        blueController.setView(blueView);
+
+        SanguineCard card = (SanguineCard) model.createDeck().get(0);
+        int row = 0;
+        int col = 0;
+        redController.clickCard(card);
+        redController.clickCell(row, col);
+        redController.pressM();
+
+        blueController.pressP();
+        redController.pressP();
+        assertTrue(log.toString().contains("Game over"));
+    }
+
 }
