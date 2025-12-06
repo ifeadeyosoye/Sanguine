@@ -45,13 +45,10 @@ public class SanguineGame {
 
 
     SanguineModel model = new BasicSanguineModel();
-    List<SanguineCard> redDeck;
-    List<SanguineCard> blueDeck;
+    List<SanguineCard> redDeck = setDecks(redDeckPath, model);
+    List<SanguineCard> blueDeck = setDecks(blueDeckPath, model);
 
-    setDecks(redDeckPath, model, blueDeckPath);
-
-
-    model.startGame(rows, cols, model.createDeck(), model.createDeck(), 7);
+    model.startGame(rows, cols, redDeck, blueDeck, 7);
     UserPlayer redPlayer = makeUserPlayer(model, PlayerColor.RED, redPlayerType);
     UserPlayer bluePlayer = makeUserPlayer(model, PlayerColor.BLUE, bluePlayerType);
 
@@ -70,26 +67,23 @@ public class SanguineGame {
   /**
    * sets deck to the given parameters or makes the default ones from the model.
    *
-   * @param redDeckPath path for red deck
    * @param model model
-   * @param blueDeckPath path for the bluedeck
+   * @param deckPath path for the bluedeck
    *
    * @throws IOException if the deck file (from the model) is unreadable
    */
-  private static void setDecks(String redDeckPath, SanguineModel model, String blueDeckPath)
+  private static List<SanguineCard> setDecks(String deckPath, SanguineModel model)
       throws IOException {
-    List<SanguineCard> blueDeck;
-    List<SanguineCard> redDeck;
+    List<SanguineCard> deck = List.of();
     try {
-      redDeck = DeckParser.makeDeck(redDeckPath);
+      deck = DeckParser.makeDeck(deckPath);
     } catch (IllegalArgumentException | IOException e) {
-      redDeck = model.createDeck();
+      //we will handle this in the next lines
     }
-    try {
-      blueDeck = DeckParser.makeDeck(blueDeckPath);
-    } catch (IllegalArgumentException | IOException e) {
-      blueDeck = model.createDeck();
+    if (deck.isEmpty()) {
+      deck = model.createDeck();
     }
+    return deck;
   }
 
   /**
