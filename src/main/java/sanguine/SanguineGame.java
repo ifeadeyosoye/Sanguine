@@ -21,7 +21,7 @@ import sanguine.view.SanguineViewFrame;
 /**
  * this is where the game will run. it will be started from here.
  */
-public class SanguineGame {
+public final class SanguineGame {
 
   /**
    * this is the main method.
