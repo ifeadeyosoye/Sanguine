@@ -18,7 +18,18 @@ import sanguine.strategies.MiniMax;
 import sanguine.view.SanguineGuiView;
 import sanguine.view.SanguineViewFrame;
 
+/**
+ * this is where the game will run. it will be started from here.
+ */
 public class SanguineGame {
+
+  /**
+   * this is the main method.
+   *
+   * @param args from the command line.
+   *
+   * @throws IOException if the deck file is unreachable
+   */
   public static void main(String[] args) throws IOException {
 
     if (args.length < 6) {
@@ -40,7 +51,7 @@ public class SanguineGame {
     setDecks(redDeckPath, model, blueDeckPath);
 
 
-    model.startGame(3, 5, model.createDeck(), model.createDeck(), 7);
+    model.startGame(rows, cols, model.createDeck(), model.createDeck(), 7);
     UserPlayer redPlayer = makeUserPlayer(model, PlayerColor.RED, redPlayerType);
     UserPlayer bluePlayer = makeUserPlayer(model, PlayerColor.BLUE, bluePlayerType);
 
