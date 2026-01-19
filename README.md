@@ -1,5 +1,5 @@
-## Sanguine: Storm of Crimson
-# Table of Contents
+# Sanguine: Storm of Crimson
+## Table of Contents
 - Overview
 - Quick Start
 - Key Components
